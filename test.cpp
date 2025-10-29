@@ -21,12 +21,13 @@ int main(){
 
     int t; cin>>t;
     while(t--){
-        int n; cin>>n;
+        double n; cin>>n;
         if(n==3) cout<<1<<'\n';
         else if(n>3){
-            int r = n%3;
-            if(n/3 > 1) r++;
-            cout<<r<<'\n';
+        
+            double a = n/3;
+ 
+        
         } else cout<<0<<'\n';
 
     }
