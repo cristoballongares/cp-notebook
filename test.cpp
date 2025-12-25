@@ -1,37 +1,16 @@
 #include<bits/stdc++.h>
-
 using namespace std;
 
 int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-
-    // Cuantas veces son necesarias para que n sea <= 2?
-    // n tiene mitad exacta?
-
-    // porque para 8 y 4 son iguales?
-    // para todo n>3 son 2 veces!
-    // Solo tenemos que evaluar dos casos para todo n>3
-    // Dividir m en 3 partes(?)
-    // m1 = n%3, m2 = n/3, m3 = n/3
-
-    // por ejemplo, para n = 10
-    // 3 3 4
+    cin.tie(0)->sync_with_stdio(0);
 
 
-    int t; cin>>t;
-    while(t--){
-        double n; cin>>n;
-        if(n==3) cout<<1<<'\n';
-        else if(n>3){
-        
-            double a = n/3;
- 
-        
-        } else cout<<0<<'\n';
+    int a; cin>>a;
+    if(a==-999) cout<<-998<<' '<<-1;
+    else if(a==999) cout<<998<<' '<<1;
+    else if(a==1) cout<<2<<' '<<-1;
+    else cout<<a-1<<' '<<1;
 
-    }
-    
-
+    return 0;
 
 }
