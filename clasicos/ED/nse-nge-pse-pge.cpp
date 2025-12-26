@@ -1,6 +1,11 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+// -1: Significa no existe
+
+// NGE: Devuelve un arreglo (a) que se crea a partir de otro arreglo (b) en donde
+// cada a_i es el NGE de b_i 
+
 //Encontrar el Next Greater Element (NGE)
 vector<int> nge(vector<int>b, vector<int>a){
     stack<int> s;
@@ -46,8 +51,16 @@ vector<int> nse(vector<int> a){
     }
 
     for(int &x:a) sol.push_back((um.count(x)?um[x]:-1));
-
     return sol;
+}
+// PSE: Preview Smaller Element
+// ej: 2 5 3 4 8 2 1
+//    -1 2 2 3 4 -1 -1
+vector<int> pse(vector<int> a){
+    reverse(a.begin(),a.end());
+    vector<int> b = nse(a);
+    reverse(b.begin(),b.end());
+    return b;
 }
 
 // pruebas
@@ -56,7 +69,7 @@ int main(){
     int n; cin>>n;
     vector<int> a(n);
     for(int &x:a) cin>>x;
-    vector<int> sol = nse(a);
+    vector<int> sol = pse(a);
     for(int &x:sol) cout<<x<<' ';
     return 0;
 }
