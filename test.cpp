@@ -5,7 +5,7 @@ void solve(){
     ll n,m; cin>>n>>m;
     ll i;
     ll sol = -1;
-    for(i=1;i<=m;i++) sol+=(n+i)/(i*i);
+    for(i=1;i<=m;i++) sol+=(n+i)/(i*i); // xD
     cout<<sol<<'\n';
 }
 
