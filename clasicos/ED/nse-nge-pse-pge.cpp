@@ -29,6 +29,36 @@ vector<int> nge(vector<int>b, vector<int>a){
     return sol;
 }
 
+vector<int> nge(vector<int>a){
+    stack<int> s;
+    unordered_map<int,int> um;
+    int i;
+    s.push(a[0]);
+    for(i=1;i<a.size();i++){
+        int prev = s.top();
+        int act = a[i];
+        while(act>prev){
+            um[prev] = act;
+            s.pop();
+            if(s.empty()) break;
+            prev = s.top();
+        }
+        s.push(act);
+    }
+
+    vector<int> sol;
+    for(int x:a) sol.push_back(um.count(x)?um[x]:-1);
+    return sol;
+}
+
+
+vector<int> pge(vector<int> a){
+    reverse(a.begin(),a.end());
+    vector<int> b = nge(a);
+    reverse(b.begin(),b.end());
+    return b;
+}
+
 //Encontrar el NextSmallerElement
 // ej: 8 2 5 7 3 2 1
 //     2 1 3 3 2 1 -1
@@ -49,9 +79,9 @@ vector<int> nse(vector<int> a){
         }
         s.push(a[i]);
     }
-
-    for(int &x:a) sol.push_back((um.count(x)?um[x]:-1));
-    return sol;
+    vector<int> solucion;
+    for(int elemento:a) solucion.push_back(um[elemento]);
+    return solucion;
 }
 // PSE: Preview Smaller Element
 // ej: 2 5 3 4 8 2 1
@@ -69,7 +99,8 @@ int main(){
     int n; cin>>n;
     vector<int> a(n);
     for(int &x:a) cin>>x;
-    vector<int> sol = pse(a);
+
+    vector<int> sol = pge(a);
     for(int &x:sol) cout<<x<<' ';
     return 0;
 }
