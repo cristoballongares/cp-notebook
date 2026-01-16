@@ -72,48 +72,48 @@ void solve(){
     vector<segment> segments;
     int a,b;
     bool ok=1;
-    while(cin>>a>>b && ok){
+    int x = 0, y = 0;
+    while(cin>>a>>b){
+        if(a==0&&b==0) break;
         // Lo encontramos de una
-        if(a==0 && b==m){
-            cout<<1<<'\n'<<0<<' '<<m;
-            return ;
-        }
-        
-        if(a<=0 && b>=m){
-            cout<<1<<'\n'<<a<<' '<<b;
-            return ;
+        if(a<=0 && b>=m && ok){
+            x=a; y=b;
+            ok = 0;
         }
 
         segment s;
         s.l = a; s.r = b;
         if(a<=m)segments.push_back(s);
 
-        sort(segments.begin(), segments.end(), [&](auto a, auto b){
+    }
+
+    if(!ok){
+        cout<<1<<'\n'<<x<<' '<<y<<'\n';
+        return ;
+    }
+
+    sort(segments.begin(), segments.end(), [&](auto a, auto b){
             int lA = a.l; int lB = b.l;
             if(lA==lB) return a.r>b.r;
             return lA<lB;
 
         });
-        if(a==0&&b==0) ok = 0;
-    }
 
+    // cout<<"AQUI!\n
     // for(segment s:segments) cout<<s.l<<' '<<s.r<<'\n';
     int i;
     stack<segment> s;
     s.push(segments[0]);
-    int A = segments[0].l, B = segments[0].r;
     
     for(i=1;i<segments.size();i++){
 
         int l=segments[i].l, r = segments[i].r;
 
-        while(s.size()>1 && (l==s.top().l&& r>s.top().r)){
+        while(s.size()>1 && (r>=s.top().r)){
             cout<<"\tsacando: "<<s.top().l<<' '<<s.top().r<<'\n';
             s.pop();
         }
-
-
-        if(r>B) s.push(segments[i]);
+        s.push(segments[i]);
         if(s.top().r==m) break;
 
     }
