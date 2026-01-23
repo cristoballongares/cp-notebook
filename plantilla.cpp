@@ -2,6 +2,7 @@
 using namespace std;
 using ll = long long;
 using lli = long long int;
+
 void solve(){
     
 }
@@ -9,12 +10,12 @@ void solve(){
 int main(){
     ios::sync_with_stdio(false); cin.tie(nullptr);
     
-    // int t; cin>>t;
+    int t; cin>>t;
 
-    // while(t--){
-    //     solve();
-    //     cout<<'\n';
-    // }
+    while(t--){
+        solve();
+        cout<<'\n';
+    }
 
     return 0;
 }
