@@ -20,6 +20,8 @@ vector<lli> factorizar(lli n){
 
 int main(){
     lli n; cin>>n;
+    // lli a,b,c,d; cin>>a>>b>>c>>d;
+    // lli r = a*b*c*d;
     vector<lli> productos = factorizar(n);
 
     lli sol =1;
