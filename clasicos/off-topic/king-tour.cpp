@@ -12,20 +12,32 @@ using vll = vector<ll>;
 #define fast ios::sync_with_stdio(false); cin.tie(nullptr)
 
 // loops
-#define FOR(i,a,b) for(int i=(a);i<(b);i++)
-#define FOReq(i,a,b) for(int i=(a);i<=(b);i++)
-#define RFOR(i,a,b) for(int i=(a);i>=(b);i--)
+#define forr(i,a,b) for(int i=(a);i<(b);i++)
+#define FOR(i,a,b) for(int i=(a);i<=(b);i++)
+#define rof(i,a,b) for(int i=(a);i>=(b);i--)
 
 // utileria
-#define all(x)  (x).begin(),(x).end()
-#define sz(x)   (int)(x).size()
-#define pb      push_back
-#define fi      first
-#define se      second
+#define all(x) (x).begin(),(x).end()
+#define sz(x) (int)(x).size()
+#define pb push_back
+#define fi first
+#define se second
 
 // mates
 #define MOD 1000000007LL
 #define INF 1e18
+
+// debugging
+
+#ifdef LOCAL
+    #define dbg(x) cerr << #x << " = " << x << "\n"
+    #define dbgv(v) cerr << #v << " = "; for(auto x : v) cerr << x << " "; cerr << "\n"
+    #define dbgm(m) cerr << #m << ":\n"; for(auto row : m){ for(auto x : row) cerr << x << " "; cerr << "\n";}
+#else
+    #define dbg(x)
+    #define dbgv(v)
+    #define dbgm(m)
+#endif
 
 // -------------------------------------------
 
@@ -40,7 +52,7 @@ bool isValid(int x, int y, vector<vector<int>> &tab){
 
 }
 
-int countPositions(int x, int y, vector<vector<int>> &tab){
+int countPositions(int x, int y, vector<vector<int>>& tab){
 
     int k;
     int count = 0;
@@ -55,8 +67,6 @@ int countPositions(int x, int y, vector<vector<int>> &tab){
     }
 
     return count;
-    
-
 }
 
 
@@ -68,20 +78,47 @@ void solve(){
 
     vector<vector<int>> tab(n,vector<int>(n, -1));
 
-    int i,j;
+    int x = 0, y = 0;
+    tab[x][y] = 1;
 
-    for(i=0;i<n;i++){
+    int step;
 
-        for(j=0;j<n;j++){
+    int bestX = -1, bestY = -1, bestCount = INT_MAX;
 
-            tab[i][j] = countPositions(i,j,tab);
+    vector<pii> valid_moves;
 
+    for(step = 2; step<= n*n; step++){
+    
+        for(int k = 0; k<8; k++){
+
+            int X = step + dx[k];
+            int Y = step + dy[k];
+
+            if(isValid(X, Y, tab)){
+                tab[X][Y] = tab[x][y]+1;
+                int count = countPositions(X, Y, tab);
+                if(count < bestCount){
+                    bestCount = count;
+                    bestX = X;
+                    bestY = Y;
+                }
+            }
         }
+
+
+        x = bestX;
+        y = bestY;
+        tab[x][y] = step;
+
 
     }
 
-    
 
+
+    dbgm(tab);
+
+
+    
 }
 
 int main(){
