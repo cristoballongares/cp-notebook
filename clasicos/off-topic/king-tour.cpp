@@ -62,24 +62,7 @@ int countPositions(int x, int y, vector<vector<int>> &tab){
 
 void solve(){
     
-    int n;cin>>n;
-
-    assert(n>=4);
-
-    vector<vector<int>> tab(n,vector<int>(n, -1));
-
-    int i,j;
-
-    for(i=0;i<n;i++){
-
-        for(j=0;j<n;j++){
-
-            tab[i][j] = countPositions(i,j,tab);
-
-        }
-
-    }
-
+    
     
 
 }
