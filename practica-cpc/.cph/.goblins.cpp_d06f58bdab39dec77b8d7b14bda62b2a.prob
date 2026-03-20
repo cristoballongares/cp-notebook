@@ -1,0 +1,1 @@
+{"name":"Local: goblins","url":"c:\\Users\\crist\\Documents\\cp-notebook\\practica-cpc\\goblins.cpp","tests":[{"id":1771949777757,"input":"4\n+ 1\n+ 2\n* 3\n-","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\crist\\Documents\\cp-notebook\\practica-cpc\\goblins.cpp","group":"local","local":true}

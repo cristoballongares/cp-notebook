@@ -1,0 +1,1 @@
+{"name":"Local: test","url":"c:\\Users\\crist\\Documents\\cp-notebook\\test.cpp","tests":[{"id":1773064617349,"input":"4 5\n>>>><\n^v>><\n^<>v>\n<v>><\n","output":"2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\crist\\Documents\\cp-notebook\\test.cpp","group":"local","local":true}

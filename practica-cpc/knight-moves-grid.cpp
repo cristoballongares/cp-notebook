@@ -41,7 +41,63 @@ using vll = vector<ll>;
 
 // -------------------------------------------
 
+vector<int> dx = {-2,-2,2,2,1,-1,1,-1};
+vector<int> dy = {1,-1,1,-1,2,2,-2,-2};
+
+bool isValid(int x, int y, vector<vector<int>> &tab){
+
+    int n = tab.size();
+
+    return((x>=0 && x<n && y>=0 && y<n) && tab[x][y]==-1);
+
+}
+
+
 void solve(){
+
+    int n; cin>>n;
+    vector<vi> tab(n, vector<int>(n,-1));
+
+    queue<pii> q;
+
+    tab[0][0] = 0;
+    q.push({0,0});
+
+    while(!q.empty()){
+
+        auto u = q.front();
+        q.pop();
+
+        // cout<<u.first<<' '<<u.second<<'\n';
+
+        //Buscamos los vecinos de u, los cuales son los posibles movimientos para esa casilla
+        for(int k = 0; k<8; k++){
+
+            int x = u.first, y = u.second;
+
+            int X = x + dx[k], Y = y + dy[k];
+
+            if(isValid(X,Y,tab)){
+
+                tab[X][Y] = tab[x][y] + 1;
+                q.push({X,Y});
+
+            }
+
+        }
+
+    }
+
+    for(vector<int> &v: tab){
+
+        for(int &x:v){
+
+            cout<<x<<' ';
+        }
+
+        cout<<'\n';
+
+    }
     
 }
 
@@ -49,7 +105,7 @@ int main(){
     fast;
     
     int t=1; 
-    cin>>t;
+    // cin>>t;
     while(t--){solve();cout<<'\n';}
 
     return 0;
