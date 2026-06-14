@@ -15,6 +15,8 @@ __pycache__/
 
 # Competitive Programming Helper metadata
 # .cph/ 
+.codewhale/
+.gitignore
 
 # Temporary files
 scratch/

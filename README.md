@@ -13,7 +13,6 @@ The repository is organized primarily by platform and topic:
 - **icpc/**: Materials and problems related to ICPC regions and training.
 - **clasicos/**: Implementations of standard algorithms and data structures (DP, Graphs, Number Theory, etc.).
 - **templates/**: Reusable code templates and cheatsheets.
-- **icpc-training-os/**: Tools and scripts for tracking training statistics.
 
 ## Purpose
 
