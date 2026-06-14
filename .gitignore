@@ -1,0 +1,28 @@
+# Compiled binaries
+*.exe
+*.o
+*.out
+*.app
+*.pyd
+*.pyc
+__pycache__/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Competitive Programming Helper metadata
+# .cph/ 
+
+# Temporary files
+scratch/
+test.cpp
+test.py
+test.exe
+test.txt
+
+# Python environment
+venv/
+.env

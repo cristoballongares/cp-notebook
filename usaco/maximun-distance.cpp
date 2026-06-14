@@ -41,15 +41,52 @@ using vll = vector<ll>;
 
 // -------------------------------------------
 
+ll dist(const int a1, const int a2, const int b1, const int b2){
+
+    return hypot ( (a2 - a1), (b2 - b1));
+
+}
+
 void solve(){
     
+    int n; cin>>n;
+
+    vector<int> x(n);
+    vector<int> y(n);
+
+    for(int &a:x) cin>>a;
+    for(int &a:y) cin>>a;
+
+    ll sol = 0;
+
+    
+    for(int i = 0; i < x.size() - 1 ; i++){
+
+        ll a1,a2;
+        a1 = 1LL * x[i];
+        a2 = 1LL * x[i + 1];
+
+        for(int j = 0 ; j < y.size() - 1; j++){
+
+            ll y1,y2;
+            y1 = 1LL * y[j];
+            y2 = 1LL * y[j + 1];
+
+            ll sol = max(sol, dist(a1,a2,y1,y2));
+
+        }
+
+    }
+
+    cout<<sol;
+
 }
 
 int main(){
     fast;
     
     int t=1; 
-    cin>>t;
+    // cin>>t;
     while(t--){solve();cout<<'\n';}
 
     return 0;

@@ -93,8 +93,44 @@ void bfs(int &x, vector<vi> &adj){
 
 
 }
+// 0 1 BFS
+void bfs_ZO(int origen, vector<vector<pii>> &adj){
+
+    int s = origen, n = adj.size();
+
+    vector<int> d(n,INF);
+    deque<int> dq;
+
+    d[s] = 0;
+    dq.push_front(s);
+
+    while(!dq.empty()){
+
+        int v = dq.front();
+        dq.pop_front();
 
 
+
+        for(auto &edge: adj[v]){
+
+            int u = edge.first;
+            int w = edge.second;
+
+            if(d[v] + w < d[u]){
+
+                d[u] = d[v] + w;
+
+                if(w == 1){
+                    dq.push_back(u);
+                } else dq.push_front(u);
+
+            }
+
+        }
+
+    }
+
+}
 
 
 void solve(){

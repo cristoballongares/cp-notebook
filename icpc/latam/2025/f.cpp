@@ -24,6 +24,7 @@ unordered_map<ll, ll> fact(ll n){
         factores[2]++;
         n/=2;
     }
+    
     for(ll d = 3; d*d <= n; d += 2){
         while(n%d==0){
             factores[d]++;

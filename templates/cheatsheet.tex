@@ -1,0 +1,3361 @@
+% ============================================================
+% ICPC Cheat Sheet -- Cuaderno de Competencia
+% Compilar con: pdflatex cheatsheet.tex  (ejecutar DOS VECES para generar la tabla de contenidos)
+% ============================================================
+\documentclass[10pt,a4paper]{article}
+
+% --- Paquetes ---
+\usepackage[margin=1.2cm,headheight=14pt]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{array}
+
+% --- Encabezados ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{ICPC Cheat Sheet}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% --- Secciones mas compactas ---
+\titleformat{\section}{\large\bfseries}{}{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0pt}{}
+\titleformat{\subsubsection}{\small\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+\titlespacing*{\subsection}{0pt}{4pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{3pt}{1pt}
+
+% --- Estilo de codigo ---
+\definecolor{kwcolor}{RGB}{0,0,180}
+\definecolor{cmtcolor}{RGB}{0,120,0}
+\definecolor{strcolor}{RGB}{0,0,0}
+\definecolor{bgcode}{RGB}{255,255,255}
+
+\lstset{
+  language=C++,
+  basicstyle=\ttfamily\fontsize{7.5pt}{9pt}\selectfont,
+  keywordstyle=\color{kwcolor}\bfseries,
+  commentstyle=\color{cmtcolor}\itshape,
+  stringstyle=\color{strcolor},
+  backgroundcolor=\color{bgcode},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=4pt,
+  frame=single,
+  framesep=2pt,
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=2,
+  showstringspaces=false,
+  columns=flexible,
+  xleftmargin=12pt,
+  framexleftmargin=10pt,
+  aboveskip=4pt,
+  belowskip=4pt,
+  morekeywords={ll,lli,vi,vll,pii,pll,int128},
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1
+}
+
+% --- Espaciado compacto ---
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlength{\columnsep}{0.4cm}
+\setlist{nosep,leftmargin=*}
+
+% ============================================================
+\begin{document}
+
+% --- Portada ---
+\begin{titlepage}
+\centering
+\vspace*{4cm}
+{\Huge\bfseries ICPC Cheat Sheet\par}
+\vspace{1cm}
+{\Large Cuaderno de Algoritmos para Competencias\par}
+\vspace{2cm}
+{\large Equipo: \texttt{[DBC++]}\par}
+\vspace{0.5cm}
+{\large Universidad: \texttt{[Instituto Tecnológico de Zacatepec]}\par}
+\vspace{0.5cm}
+\vspace{3cm}
+{\normalsize C++17 $\bullet$ Todos los algoritmos compilables $\bullet$ Probados en jueces en l\'inea\par}
+\end{titlepage}
+
+% --- Tabla de contenidos ---
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Plantilla Base y E/S R\'apida}
+% ============================================================
+\begin{multicols}{2}
+
+\subsection{Plantilla completa}
+\textbf{Tiempo:} --- \quad \textbf{Espacio:} ---\\
+\textit{Cu\'ando usarla:} Al inicio de cada problema. Incluye tipos, macros y E/S r\'apida.
+
+\begin{lstlisting}
+#include <bits/stdc++.h>
+using namespace std;
+
+using ll  = long long;
+using lli = long long int;
+using pii = pair<int,int>;
+using pll = pair<ll,ll>;
+using vi  = vector<int>;
+using vll = vector<ll>;
+
+#define fast ios::sync_with_stdio(false); cin.tie(nullptr)
+#define all(x) (x).begin(),(x).end()
+#define sz(x) (int)(x).size()
+#define pb push_back
+#define fi first
+#define se second
+
+const int MOD = 1e9 + 7;
+const ll INF = 1e18;
+
+void solve(){
+
+}
+
+int main(){
+    fast;
+    int t = 1;
+    // cin >> t;
+    while(t--) solve();
+    return 0;
+}
+\end{lstlisting}
+
+\subsection{E/S r\'apida con scanf/printf}
+\textbf{Tiempo:} --- \quad \textbf{Espacio:} ---\\
+\textit{Cu\'ando usarla:} Cuando cin/cout son demasiado lentos (datos masivos $>10^6$ l\'ineas).
+
+\begin{lstlisting}
+// Added -- not in notebook
+#include <cstdio>
+// Leer entero
+int x; scanf("%d", &x);
+// Leer long long
+long long y; scanf("%lld", &y);
+// Leer string sin espacios
+char s[200001]; scanf("%s", s);
+// Imprimir
+printf("%d %lld\n", x, y);
+\end{lstlisting}
+
+\subsection{Uso de \_\_int128}
+\textbf{Tiempo:} --- \quad \textbf{Espacio:} ---\\
+\textit{Cu\'ando usarlo:} Cuando se necesita precisi\'on mayor que \texttt{long long} ($>9.2\times10^{18}$), t\'ipicamente en multiplicaciones intermedias.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// No se puede usar cin/cout directamente.
+// Funcion auxiliar para imprimir:
+void print128(__int128 x){
+    if(x < 0){ putchar('-'); x = -x; }
+    if(x > 9) print128(x / 10);
+    putchar('0' + (int)(x % 10));
+}
+// Uso tipico: evitar overflow en a*b mod m
+long long mulmod(long long a, long long b, long long m){
+    return ((__int128)a * b) % m;
+}
+\end{lstlisting}
+
+\subsection{Comparadores personalizados}
+\textbf{Tiempo:} --- \quad \textbf{Espacio:} ---\\
+\textit{Cu\'ando usarlos:} Ordenar por criterios no est\'andar, priority\_queue con min-heap, sets con orden custom.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Lambda para sort
+sort(all(v), [](const pii &a, const pii &b){
+    if(a.se != b.se) return a.se < b.se;
+    return a.fi < b.fi;
+});
+// Struct para priority_queue (min-heap)
+struct Cmp {
+    bool operator()(const pii &a, const pii &b){
+        return a.se > b.se; // menor primero
+    }
+};
+priority_queue<pii, vector<pii>, Cmp> pq;
+// Min-heap rapido con greater
+priority_queue<int,vector<int>,greater<int>> minpq;
+\end{lstlisting}
+
+\subsection{Compresi\'on de coordenadas}
+\textbf{Tiempo:} $O(n \log n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarla:} Valores grandes ($\leq 10^9$) pero pocos elementos distintos ($\leq 10^5$). Permite usar arreglos indexados.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Dado vector<int> a de tamanio n:
+vi sorted_a = a;
+sort(all(sorted_a));
+sorted_a.erase(unique(all(sorted_a)), sorted_a.end());
+// Comprimir: a[i] -> indice en sorted_a
+for(int &x : a)
+    x = lower_bound(all(sorted_a), x) - sorted_a.begin();
+// Ahora a[i] esta en [0, sorted_a.size()-1]
+\end{lstlisting}
+
+\subsection{Trucos con next\_permutation}
+\textbf{Tiempo:} $O(n!)$ total \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Fuerza bruta sobre permutaciones ($n \leq 10$).
+
+\begin{lstlisting}
+// Added -- not in notebook
+vi a = {1, 2, 3, 4};
+sort(all(a)); // IMPORTANTE: empezar ordenado
+do {
+    // procesar permutacion actual a[]
+} while(next_permutation(all(a)));
+
+// Permutaciones de un string
+string s = "abc";
+sort(all(s));
+do {
+    // procesar s
+} while(next_permutation(all(s)));
+\end{lstlisting}
+
+\end{multicols}
+\newpage
+
+% ============================================================
+\section{Estructuras de Datos}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- Sparse Table ----
+\subsection{Sparse Table}
+\textbf{Tiempo:} Construcci\'on $O(n \log n)$, consulta $O(1)$ \quad \textbf{Espacio:} $O(n \log n)$\\
+\textit{Cu\'ando usarla:} Consultas RMQ (m\'inimo/m\'aximo en rango) est\'aticas, sin actualizaciones.
+
+\textit{Explicación:} Precalcula el mínimo/máximo para intervalos de longitud $2^k$. Para consultar $[l,r]$, toma el mayor $k$ tal que $2^k \le len$ y combina los dos intervalos superpuestos. Los índices son 0-based.
+
+\begin{lstlisting}
+// Del notebook: clasicos/ED/Sparse-Table.cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<vector<int>> pre_min(vector<int> &input, int n){
+    vector<vector<int>> sparse(n, vector<int>(1+(int)log2(n)));
+    int i, j;
+    for(i = 0; i < n; i++) sparse[i][0] = i;
+    for(j = 1; (1<<j) <= n; j++){
+        for(i = 0; i + (1<<j) - 1 < n; i++){
+            if(input[sparse[i][j-1]] < input[sparse[i+(1<<(j-1))][j-1]])
+                sparse[i][j] = sparse[i][j-1];
+            else
+                sparse[i][j] = sparse[i+(1<<(j-1))][j-1];
+        }
+    }
+    return sparse;
+}
+
+vector<vector<int>> pre_max(vector<int> &input, int n){
+    vector<vector<int>> sparse(n, vector<int>(1+(int)log2(n)));
+    int i, j;
+    for(i = 0; i < n; i++) sparse[i][0] = i;
+    for(j = 1; (1<<j) <= n; j++){
+        for(i = 0; i + (1<<j) - 1 < n; i++){
+            if(input[sparse[i][j-1]] > input[sparse[i+(1<<(j-1))][j-1]])
+                sparse[i][j] = sparse[i][j-1];
+            else
+                sparse[i][j] = sparse[i+(1<<(j-1))][j-1];
+        }
+    }
+    return sparse;
+}
+
+int query(int l, int r,
+          const vector<vector<int>>& sparse,
+          const vector<int>& input){
+    int len = r - l + 1;
+    int k = (int)log2(len);
+    int leftI = sparse[l][k];
+    int rightI = sparse[r - (1<<k) + 1][k];
+    return min(input[leftI], input[rightI]);
+}
+// --- USO ---
+// vector<int> a = {3,1,4,1,5}; int n = a.size();
+// auto sp = pre_min(a, n);     // preprocesar minimos
+// int mn = query(1, 3, sp, a); // minimo en a[1..3] (0-based)
+// pre_min/pre_max: recibe arreglo y n, retorna tabla.
+// query(l, r, tabla, arreglo): retorna min/max en [l,r].
+// Indices 0-based. NO soporta actualizaciones.
+\end{lstlisting}
+
+\textit{Aplicado en:} \textbf{Maximum in a Window} (practica-cpc) --- Sparse Table para m\'aximo en ventana deslizante con consultas $O(1)$.
+
+\begin{lstlisting}
+// practica-cpc/maximun-in-a-window.cpp (extracto)
+int main(){
+    int n, k; cin >> n >> k;
+    vector<int> a(n);
+    for(int &x : a) cin >> x;
+    auto sparse = pre_max(a, n); // pre_max
+    int i = 0, j = k - 1;
+    while(j < n){
+        cout << query(i, j, sparse, a) << ' ';
+        i++; j++;
+    }
+}
+\end{lstlisting}
+
+% ---- NSE/NGE/PSE/PGE ----
+\subsection{Next/Previous Greater/Smaller Element}
+\textbf{Tiempo:} $O(n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Encontrar el siguiente/anterior elemento mayor/menor para cada posici\'on. Base de histograma, imbalance, stock span.
+
+\textit{Explicación:} Usan un stack monotónico. Cada función devuelve un vector de \textbf{índices} (no valores). Por ejemplo, `nge(a)[i]` es el índice del primer elemento a la derecha de `i` que es estrictamente mayor que `a[i]`; si no existe, devuelve `n`. Las versiones `pge` (previous greater) devuelven índice del anterior mayor a la izquierda, o `-1` si no existe. Para obtener el valor, usa `a[ idx ]`. Útil para calcular áreas en histograma.
+
+\begin{lstlisting}
+// Del notebook: clasicos/ED/nse-nge-pse-pge.cpp
+// Version con indices (mas practica)
+vector<int> nge(vector<int> a){
+    stack<int> s;
+    int n = a.size();
+    vector<int> sol(n);
+    for(int i = n-1; i >= 0; i--){
+        while(!s.empty() && a[i] >= a[s.top()])
+            s.pop();
+        sol[i] = s.empty() ? n : s.top();
+        s.push(i);
+    }
+    return sol;
+}
+
+vector<int> nse(vector<int> a){
+    stack<int> s;
+    int n = a.size();
+    vector<int> sol(n);
+    for(int i = n-1; i >= 0; i--){
+        while(!s.empty() && a[i] <= a[s.top()])
+            s.pop();
+        sol[i] = s.empty() ? n : s.top();
+        s.push(i);
+    }
+    return sol;
+}
+
+vector<int> pge(vector<int> a){
+    stack<int> s;
+    int n = a.size();
+    vector<int> sol(n);
+    for(int i = 0; i < n; i++){
+        while(!s.empty() && a[i] > a[s.top()])
+            s.pop();
+        sol[i] = s.empty() ? -1 : s.top();
+        s.push(i);
+    }
+    return sol;
+}
+
+vector<int> pse(vector<int> a){
+    stack<int> s;
+    int n = a.size();
+    vector<int> sol(n);
+    for(int i = 0; i < n; i++){
+        while(!s.empty() && a[i] < a[s.top()])
+            s.pop();
+        sol[i] = s.empty() ? -1 : s.top();
+        s.push(i);
+    }
+    return sol;
+}
+// --- USO ---
+// Cada funcion recibe vector<int> y retorna vector<int>
+// de INDICES (no valores). Ejemplo: a = {3,1,4,1,5}
+// nge(a) -> para cada i, indice del proximo mayor a la
+//   derecha. Si no hay, retorna n.
+// nse(a) -> proximo menor a la derecha. Si no hay, n.
+// pge(a) -> previo mayor a la izquierda. Si no hay, -1.
+// pse(a) -> previo menor a la izquierda. Si no hay, -1.
+// auto ng = nge(a); // ng[0]=2 porque a[2]=4 > a[0]=3
+\end{lstlisting}
+
+\textit{Aplicado en:} \textbf{Histograma (SPOJ)} --- \'Area m\'axima del rect\'angulo en histograma usando PSE y NSE.
+
+\begin{lstlisting}
+// vjudge/histogra.cpp (extracto)
+long long largestRectangleArea(vector<ll>& h){
+    int n = h.size();
+    vector<ll> NSE = nse(h);
+    vector<ll> PSE = pse(h);
+    long long sol = 0;
+    for(int j = 0; j < n; j++)
+        sol = max(sol, h[j]*(NSE[j]-PSE[j]-1));
+    return sol;
+}
+\end{lstlisting}
+
+\textit{Aplicado en:} \textbf{Imbalanced (CF)} --- Suma de (max - min) de todos los subarreglos usando contribuci\'on de cada elemento.
+
+\begin{lstlisting}
+// practica-cpc/imbalanced.cpp (extracto)
+ll total = 0;
+for(int i = 0; i < n; i++){
+    ll rmax = 1LL*(i-pge[i])*(nge[i]-i);
+    ll rmin = 1LL*(i-pse[i])*(nse[i]-i);
+    total += rmax*a[i] - rmin*a[i];
+}
+\end{lstlisting}
+
+% ---- Trucos con Stack/Queue ----
+\subsection{Trucos con Stack y Queue}
+\textbf{Tiempo:} $O(n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlos:} Matching de par\'entesis, secuencias regulares, evaluaci\'on de expresiones.
+
+\begin{lstlisting}
+// Del notebook: practica-cpc (bracket problems)
+// Contar parentesis sobrantes (no matcheados)
+int unmatchedBrackets(string &st){
+    stack<char> s;
+    for(char &x : st){
+        if(x == '(') s.push(x);
+        else {
+            if(!s.empty() && s.top() == '(') s.pop();
+            else s.push(x);
+        }
+    }
+    return s.size();
+}
+
+// Longest Regular Bracket Sequence + conteo
+pair<int,int> longestRegular(string &st){
+    stack<int> s;
+    s.push(-1);
+    int mx = 0, count = 1;
+    for(int i = 0; i < (int)st.length(); i++){
+        if(st[i] == '('){
+            s.push(i);
+        } else {
+            s.pop();
+            if(s.empty()){
+                s.push(i);
+            } else {
+                int k = i - s.top();
+                if(k > mx){ mx = k; count = 1; }
+                else if(k == mx) count++;
+            }
+        }
+    }
+    return {mx, count};
+}
+\end{lstlisting}
+
+% ---- Segment Tree ----
+\subsection{Segment Tree (actualizaci\'on puntual)}
+\textbf{Tiempo:} Construcci\'on $O(n)$, consulta/actualizaci\'on $O(\log n)$ \quad \textbf{Espacio:} $O(4n)$\\
+\textit{Cu\'ando usarlo:} Consultas de rango (suma, m\'in, m\'ax) con actualizaciones puntuales din\'amicas.
+
+\textit{Explicación:} El árbol se construye recursivamente. Cada nodo almacena la suma (u otra operación asociativa) de un intervalo. Para actualizar una posición, se cambia el valor en las hojas y se propaga hacia arriba. Para consultar un rango, se recorren los nodos que cubren exactamente el intervalo pedido.
+
+\begin{lstlisting}
+// Added -- not in notebook
+struct SegTree {
+    int n;
+    vector<ll> tree;
+
+    SegTree(int n) : n(n), tree(4*n, 0) {}
+
+    void build(vector<ll> &a, int v, int tl, int tr){
+        if(tl == tr){
+            tree[v] = a[tl];
+            return;
+        }
+        int tm = (tl + tr) / 2;
+        build(a, 2*v, tl, tm);
+        build(a, 2*v+1, tm+1, tr);
+        tree[v] = tree[2*v] + tree[2*v+1];
+    }
+
+    void build(vector<ll> &a){ build(a, 1, 0, n-1); }
+
+    void update(int v, int tl, int tr, int pos, ll val){
+        if(tl == tr){
+            tree[v] = val;
+            return;
+        }
+        int tm = (tl + tr) / 2;
+        if(pos <= tm) update(2*v, tl, tm, pos, val);
+        else update(2*v+1, tm+1, tr, pos, val);
+        tree[v] = tree[2*v] + tree[2*v+1];
+    }
+
+    void update(int pos, ll val){
+        update(1, 0, n-1, pos, val);
+    }
+
+    ll query(int v, int tl, int tr, int l, int r){
+        if(l > r) return 0;
+        if(l == tl && r == tr) return tree[v];
+        int tm = (tl + tr) / 2;
+        return query(2*v, tl, tm, l, min(r, tm))
+             + query(2*v+1, tm+1, tr, max(l, tm+1), r);
+    }
+
+    ll query(int l, int r){
+        return query(1, 0, n-1, l, r);
+    }
+};
+// --- USO ---
+// SegTree st(n);          // crear con n elementos
+// st.build(a);            // construir desde vector a (0-based)
+// st.update(i, val);      // a[i] = val (REEMPLAZA, no suma)
+// ll s = st.query(l, r);  // suma de a[l..r] (0-based, inclusive)
+// Para min/max: cambiar + por min/max en build/update/query,
+// y retornar INF en vez de 0 en caso base de query.
+\end{lstlisting}
+
+% ---- Segment Tree Lazy ----
+\subsection{Segment Tree con Lazy Propagation}
+\textbf{Tiempo:} Consulta/actualizaci\'on de rango $O(\log n)$ \quad \textbf{Espacio:} $O(4n)$\\
+\textit{Cu\'ando usarlo:} Actualizaciones de rango (sumar valor a $[l,r]$, asignar valor a $[l,r]$) con consultas de rango.
+
+\textit{Explicación:} A diferencia del segment tree normal, aquí las actualizaciones pueden afectar rangos completos. Para no actualizar cada hoja, se usa un vector `lazy` que almacena la operación pendiente sobre un nodo. Al recorrer, se "empuja" (`push`) la operación a los hijos antes de continuar.
+
+\begin{lstlisting}
+// Added -- not in notebook
+struct LazySegTree {
+    int n;
+    vector<ll> tree, lazy;
+
+    LazySegTree(int n) : n(n), tree(4*n, 0), lazy(4*n, 0) {}
+
+    void build(vector<ll> &a, int v, int tl, int tr){
+        if(tl == tr){ tree[v] = a[tl]; return; }
+        int tm = (tl+tr)/2;
+        build(a, 2*v, tl, tm);
+        build(a, 2*v+1, tm+1, tr);
+        tree[v] = tree[2*v] + tree[2*v+1];
+    }
+
+    void build(vector<ll> &a){ build(a, 1, 0, n-1); }
+
+    void push(int v, int tl, int tr){
+        if(lazy[v] != 0){
+            int tm = (tl+tr)/2;
+            apply(2*v, tl, tm, lazy[v]);
+            apply(2*v+1, tm+1, tr, lazy[v]);
+            lazy[v] = 0;
+        }
+    }
+
+    void apply(int v, int tl, int tr, ll val){
+        tree[v] += val * (tr - tl + 1);
+        lazy[v] += val;
+    }
+
+    void update(int v, int tl, int tr, int l, int r, ll val){
+        if(l > r) return;
+        if(l == tl && r == tr){
+            apply(v, tl, tr, val);
+            return;
+        }
+        push(v, tl, tr);
+        int tm = (tl+tr)/2;
+        update(2*v, tl, tm, l, min(r, tm), val);
+        update(2*v+1, tm+1, tr, max(l, tm+1), r, val);
+        tree[v] = tree[2*v] + tree[2*v+1];
+    }
+
+    void update(int l, int r, ll val){
+        update(1, 0, n-1, l, r, val);
+    }
+
+    ll query(int v, int tl, int tr, int l, int r){
+        if(l > r) return 0;
+        if(l == tl && r == tr) return tree[v];
+        push(v, tl, tr);
+        int tm = (tl+tr)/2;
+        return query(2*v, tl, tm, l, min(r, tm))
+             + query(2*v+1, tm+1, tr, max(l, tm+1), r);
+    }
+
+    ll query(int l, int r){
+        return query(1, 0, n-1, l, r);
+    }
+};
+// --- USO ---
+// LazySegTree st(n);        // crear con n elementos
+// st.build(a);              // construir desde vector a (0-based)
+// st.update(l, r, val);     // SUMAR val a todos a[l..r]
+// ll s = st.query(l, r);    // suma de a[l..r] (0-based)
+// A diferencia del SegTree normal, aqui update es de RANGO:
+// st.update(2, 5, 10) suma 10 a a[2], a[3], a[4], a[5].
+// Para asignacion en rango: cambiar apply() para que
+// tree[v] = val*(tr-tl+1) y lazy[v] = val (no +=).
+\end{lstlisting}
+
+% ---- BIT / Fenwick ----
+\subsection{BIT / Fenwick Tree}
+\textbf{Tiempo:} Actualizaci\'on $O(\log n)$, consulta prefijo $O(\log n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Sumas de prefijo con actualizaciones puntuales. M\'as simple y r\'apido que Segment Tree cuando basta con sumas.
+
+\textit{Explicación:} BIT almacena sumas acumuladas en índices estratégicos. La operación `update(i, delta)` suma `delta` al elemento en posición `i` (índices 1-based). Para obtener la suma del prefijo `[1..i]`, se usa `query(i)`. Para sumar en rango `[l,r]` se calcula `query(r) - query(l-1)`. Para asignar un valor en lugar de sumar, se debe calcular la diferencia con el valor anterior: `update(i, newVal - oldVal)`.
+
+\begin{lstlisting}
+// Added -- not in notebook
+struct BIT {
+    int n;
+    vector<ll> tree;
+
+    BIT(int n) : n(n), tree(n+1, 0) {}
+
+    void update(int i, ll delta){
+        for(; i <= n; i += i & (-i))
+            tree[i] += delta;
+    }
+
+    ll query(int i){
+        ll s = 0;
+        for(; i > 0; i -= i & (-i))
+            s += tree[i];
+        return s;
+    }
+
+    ll query(int l, int r){
+        return query(r) - query(l-1);
+    }
+};
+// --- USO ---
+// BIT bit(n);                // crear, indices 1 a n
+// bit.update(i, delta);      // a[i] += delta (SUMA delta,
+//   no reemplaza). delta puede ser negativo.
+//   Ej: a[3] era 5, bit.update(3, 10) -> a[3] ahora vale 15
+//   Para setear a[i]=val: bit.update(i, val - a[i])
+// bit.query(i);              // suma de a[1..i] (prefijo)
+// bit.query(l, r);           // suma de a[l..r]
+// IMPORTANTE: indexacion 1-based (i va de 1 a n).
+// Construir desde arreglo a[1..n]:
+//   for(int i=1; i<=n; i++) bit.update(i, a[i]);
+\end{lstlisting}
+
+% ---- DSU / Union-Find ----
+\subsection{DSU / Union-Find}
+\textbf{Tiempo:} $O(\alpha(n))$ amortizado por operaci\'on \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Componentes conexas din\'amicas, Kruskal, consultas de conectividad.
+
+\textit{Explicación:} Mantiene particiones de un conjunto. `find(x)` devuelve el representante de la componente de `x`. `unite(a,b)` une las componentes de `a` y `b`, retorna `true` si estaban separadas. `connected(a,b)` comprueba si están en la misma componente. `components` es el número actual de componentes.
+
+\begin{lstlisting}
+// Added -- not in notebook
+struct DSU {
+    vector<int> parent, rank_;
+    int components;
+
+    DSU(int n) : parent(n), rank_(n, 0), components(n){
+        iota(parent.begin(), parent.end(), 0);
+    }
+
+    int find(int x){
+        if(parent[x] != x)
+            parent[x] = find(parent[x]); // path compression
+        return parent[x];
+    }
+
+    bool unite(int a, int b){
+        a = find(a); b = find(b);
+        if(a == b) return false;
+        if(rank_[a] < rank_[b]) swap(a, b);
+        parent[b] = a;
+        if(rank_[a] == rank_[b]) rank_[a]++;
+        components--;
+        return true;
+    }
+
+    bool connected(int a, int b){
+        return find(a) == find(b);
+    }
+};
+// --- USO ---
+// DSU dsu(n);             // n nodos, 0-indexed [0, n-1]
+// dsu.unite(a, b);        // unir componentes de a y b.
+//   Retorna true si estaban separados, false si ya estaban juntos.
+// dsu.connected(a, b);    // true si a y b estan en la misma componente.
+// dsu.find(a);            // retorna el representante de la componente de a.
+// dsu.components;         // numero de componentes conexas actual.
+\end{lstlisting}
+
+% ---- Trie ----
+\subsection{Trie}
+\textbf{Tiempo:} Inserci\'on/b\'usqueda $O(|s|)$ \quad \textbf{Espacio:} $O(\text{total caracteres} \times \Sigma)$\\
+\textit{Cu\'ando usarlo:} Prefijos comunes, autocompletado, XOR m\'aximo, diccionarios.
+
+\textit{Explicación:} Estructura de árbol para almacenar cadenas. Cada nodo tiene un arreglo de hijos (tamaño del alfabeto). `insert(s)` agrega la cadena. `search(s)` comprueba si `s` está como palabra completa. `startsWith(prefix)` verifica si hay alguna palabra que comience con `prefix`.
+
+\begin{lstlisting}
+// Added -- not in notebook
+struct Trie {
+    struct Node {
+        int children[26];
+        bool isEnd;
+        Node(){ memset(children, -1, sizeof(children)); isEnd = false; }
+    };
+    vector<Node> nodes;
+
+    Trie(){ nodes.emplace_back(); }
+
+    void insert(const string &s){
+        int cur = 0;
+        for(char c : s){
+            int idx = c - 'a';
+            if(nodes[cur].children[idx] == -1){
+                nodes[cur].children[idx] = nodes.size();
+                nodes.emplace_back();
+            }
+            cur = nodes[cur].children[idx];
+        }
+        nodes[cur].isEnd = true;
+    }
+
+    bool search(const string &s){
+        int cur = 0;
+        for(char c : s){
+            int idx = c - 'a';
+            if(nodes[cur].children[idx] == -1) return false;
+            cur = nodes[cur].children[idx];
+        }
+        return nodes[cur].isEnd;
+    }
+
+    bool startsWith(const string &prefix){
+        int cur = 0;
+        for(char c : prefix){
+            int idx = c - 'a';
+            if(nodes[cur].children[idx] == -1) return false;
+            cur = nodes[cur].children[idx];
+        }
+        return true;
+    }
+};
+// --- USO ---
+// Trie trie;
+// trie.insert("hola");         // agrega "hola" al diccionario
+// trie.search("hola");         // true si "hola" fue insertada exacta
+// trie.search("hol");          // false (no es palabra completa)
+// trie.startsWith("hol");      // true (existe alguna palabra con prefijo "hol")
+// Solo soporta chars 'a'-'z'. Para mayusculas o digitos,
+// cambiar c-'a' por el offset adecuado y el 26 por el tamanio del alfabeto.
+\end{lstlisting}
+
+\end{multicols}
+\newpage
+
+% ============================================================
+\section{Grafos}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- BFS ----
+\subsection{BFS (Breadth-First Search)}
+\textbf{Tiempo:} $O(V + E)$ \quad \textbf{Espacio:} $O(V)$\\
+\textit{Cu\'ando usarlo:} Camino m\'as corto en grafos sin peso, explorar por niveles, distancia m\'inima.
+
+\textit{Explicación:} BFS desde un nodo fuente. Usa una cola. `vis` evita revisitar. `d` almacena distancias (en número de aristas). `p` guarda el padre para reconstruir el camino.
+
+\begin{lstlisting}
+// Del notebook: clasicos/graphs/recorridos.cpp
+void bfs(int x, vector<vi> &adj){
+    int n = adj.size();
+    queue<int> q;
+    q.push(x);
+    vector<bool> vis(n+1, false);
+    vector<int> d(n+1, 0), p(n+1, -1);
+    vis[x] = true;
+    while(!q.empty()){
+        int u = q.front(); q.pop();
+        for(int &v : adj[u]){
+            if(!vis[v]){
+                vis[v] = true;
+                d[v] = d[u] + 1;
+                p[v] = u;
+                q.push(v);
+            }
+        }
+    }
+    // Reconstruir camino a nodoDestino:
+    // for(int i = dest; i != -1; i = p[i])
+    //     path.push_back(i);
+    // reverse(path.begin(), path.end());
+}
+\end{lstlisting}
+
+\textit{Aplicado en:} \textbf{Message Route (CSES)} --- Camino m\'as corto en grafo no ponderado.
+
+\begin{lstlisting}
+// practica-cpc/message-route.cpp (extracto)
+vector<int> dist(n+1, INT_MAX);
+queue<int> q; q.push(1); dist[1] = 1;
+vector<int> parent(n+1, -1);
+while(!q.empty()){
+    int v = q.front(); q.pop();
+    for(int &u : adj[v]){
+        if(dist[u] != INT_MAX) continue;
+        dist[u] = dist[v] + 1;
+        parent[u] = v;
+        q.push(u);
+    }
+}
+// Reconstruir camino de 1 a n via parent[]
+\end{lstlisting}
+
+\textit{Aplicado en:} \textbf{Guilty Prince (LightOJ)} --- BFS en cuadr\'icula para contar celdas alcanzables.
+
+\begin{lstlisting}
+// practica-cpc/guilty-prince.cpp (extracto)
+int dx[] = {-1, 1, 0, 0};
+int dy[] = {0, 0, -1, 1};
+queue<pair<int,int>> q;
+q.push({startX, startY});
+vis[startX][startY] = true;
+int ans = 1;
+while(!q.empty()){
+    auto [x, y] = q.front(); q.pop();
+    for(int i = 0; i < 4; i++){
+        int xx = x+dx[i], yy = y+dy[i];
+        if(xx>=0 && xx<h && yy>=0 && yy<w
+           && !vis[xx][yy] && grid[xx][yy]=='.'){
+            vis[xx][yy] = true;
+            q.push({xx, yy});
+            ans++;
+        }
+    }
+}
+\end{lstlisting}
+
+% ---- 0-1 BFS ----
+\subsection{0-1 BFS}
+\textbf{Tiempo:} $O(V + E)$ \quad \textbf{Espacio:} $O(V)$\\
+\textit{Cu\'ando usarlo:} Camino m\'as corto cuando las aristas tienen peso 0 \'o 1.
+
+\textit{Explicación:} Similar a Dijkstra pero con deque. Si la arista tiene peso 0, se inserta al frente; si peso 1, al final. Así se mantiene la cola ordenada por distancias.
+
+\begin{lstlisting}
+// Del notebook: clasicos/graphs/recorridos.cpp
+void bfs_ZO(int s, vector<vector<pii>> &adj){
+    int n = adj.size();
+    vector<int> d(n, 1e9);
+    deque<int> dq;
+    d[s] = 0;
+    dq.push_front(s);
+    while(!dq.empty()){
+        int v = dq.front(); dq.pop_front();
+        for(auto &[u, w] : adj[v]){
+            if(d[v] + w < d[u]){
+                d[u] = d[v] + w;
+                if(w == 1) dq.push_back(u);
+                else dq.push_front(u);
+            }
+        }
+    }
+}
+// --- USO ---
+// adj es vector<vector<pii>> donde pii = {nodo, peso}.
+// Peso DEBE ser 0 o 1. Usa deque en vez de queue:
+// aristas de peso 0 van al frente, peso 1 al fondo.
+// Ej: cuadricula donde moverse en misma dir es gratis (0)
+// y cambiar dir cuesta 1. d[v] = distancia minima desde s.
+\end{lstlisting}
+
+% ---- DFS ----
+\subsection{DFS (Depth-First Search)}
+\textbf{Tiempo:} $O(V + E)$ \quad \textbf{Espacio:} $O(V)$\\
+\textit{Cu\'ando usarlo:} Detectar ciclos, componentes conexas, orden topol\'ogico, puentes, puntos de articulaci\'on.
+
+\begin{lstlisting}
+// Added -- not in notebook
+vector<bool> vis;
+vector<int> tin, tout;
+int timer = 0;
+
+void dfs(int v, int p, vector<vi> &adj){
+    vis[v] = true;
+    tin[v] = timer++;
+    for(int u : adj[v]){
+        if(u == p) continue;
+        if(!vis[u]) dfs(u, v, adj);
+    }
+    tout[v] = timer++;
+}
+
+// Version iterativa (evita stack overflow)
+void dfs_iter(int s, vector<vi> &adj){
+    int n = adj.size();
+    vector<bool> vis(n, false);
+    stack<int> st;
+    st.push(s);
+    while(!st.empty()){
+        int v = st.top(); st.pop();
+        if(vis[v]) continue;
+        vis[v] = true;
+        for(int u : adj[v])
+            if(!vis[u]) st.push(u);
+    }
+}
+// --- USO ---
+// Version recursiva: tin[v]/tout[v] = tiempo de entrada/salida.
+// u es ancestro de v sii tin[u] <= tin[v] && tout[v] <= tout[u].
+// Llamar: vis.assign(n,false); tin.resize(n); tout.resize(n);
+//         timer=0; dfs(root, -1, adj);
+// p = padre (pasar -1 para raiz). Evita volver al padre.
+// Version iterativa: usa stack, no calcula tin/tout.
+// Util cuando n es grande (>1e5) para evitar stack overflow.
+\end{lstlisting}
+
+% ---- Dijkstra ----
+\subsection{Dijkstra}
+\textbf{Tiempo:} $O((V + E) \log V)$ \quad \textbf{Espacio:} $O(V + E)$\\
+\textit{Cu\'ando usarlo:} Camino m\'as corto desde una fuente, aristas con peso $\geq 0$.
+
+\textit{Explicación:} Usa una cola de prioridad (min-heap) para siempre extraer el nodo con distancia mínima actual. Relaja sus aristas. El vector `dist` contiene las distancias finales. Si `dist[v] = INF`, el nodo no es alcanzable.
+
+\begin{lstlisting}
+// Added -- not in notebook
+vector<ll> dijkstra(int s, vector<vector<pii>> &adj){
+    int n = adj.size();
+    vector<ll> dist(n, 1e18);
+    // {distancia, nodo}
+    priority_queue<pll, vector<pll>, greater<pll>> pq;
+    dist[s] = 0;
+    pq.push({0, s});
+    while(!pq.empty()){
+        auto [d, v] = pq.top(); pq.pop();
+        if(d > dist[v]) continue;
+        for(auto &[u, w] : adj[v]){
+            if(dist[v] + w < dist[u]){
+                dist[u] = dist[v] + w;
+                pq.push({dist[u], u});
+            }
+        }
+    }
+    return dist;
+}
+// --- USO ---
+// adj: vector<vector<pii>>, pii = {nodo_vecino, peso}.
+// auto d = dijkstra(0, adj); // distancias desde nodo 0
+// d[v] = distancia minima de 0 a v. Si d[v]=1e18, no es alcanzable.
+// NO funciona con pesos negativos. Para eso usar Bellman-Ford.
+// Construir adj: adj[u].push_back({v, w}); (y adj[v].push_back({u, w}) si no dirigido)
+\end{lstlisting}
+
+% ---- Bellman-Ford ----
+\subsection{Bellman-Ford}
+\textbf{Tiempo:} $O(V \cdot E)$ \quad \textbf{Espacio:} $O(V)$\\
+\textit{Cu\'ando usarlo:} Camino m\'as corto con aristas negativas. Detectar ciclos negativos.
+
+\textit{Explicación:} Relaja todas las aristas $V-1$ veces. Si después de eso aún se puede relajar, hay un ciclo negativo alcanzable desde la fuente.
+
+\begin{lstlisting}
+// Added -- not in notebook
+struct Edge { int u, v; ll w; };
+
+// Retorna true si hay ciclo negativo alcanzable desde s
+bool bellmanFord(int s, int n, vector<Edge> &edges,
+                 vector<ll> &dist){
+    dist.assign(n, 1e18);
+    dist[s] = 0;
+    for(int i = 0; i < n-1; i++){
+        for(auto &[u, v, w] : edges){
+            if(dist[u] < 1e18 && dist[u]+w < dist[v])
+                dist[v] = dist[u] + w;
+        }
+    }
+    // Detectar ciclo negativo
+    for(auto &[u, v, w] : edges){
+        if(dist[u] < 1e18 && dist[u]+w < dist[v])
+            return true; // ciclo negativo
+    }
+    return false;
+}
+// --- USO ---
+// vector<Edge> edges; // lista de aristas {u, v, peso}
+// edges.push_back({0, 1, 5}); // arista de 0 a 1 con peso 5
+// vector<ll> dist;
+// bool cicloNeg = bellmanFord(0, n, edges, dist);
+// dist[v] = distancia minima desde s. Si cicloNeg=true,
+// hay ciclo negativo alcanzable (distancias no confiables).
+\end{lstlisting}
+
+% ---- Floyd-Warshall ----
+\subsection{Floyd-Warshall}
+\textbf{Tiempo:} $O(V^3)$ \quad \textbf{Espacio:} $O(V^2)$\\
+\textit{Cu\'ando usarlo:} Distancias m\'inimas entre todos los pares de nodos. $V \leq 500$.
+
+\begin{lstlisting}
+// Added -- not in notebook
+void floydWarshall(vector<vector<ll>> &dist, int n){
+    // dist[i][j] inicializado con pesos de aristas,
+    // dist[i][i] = 0, dist[i][j] = INF si no hay arista
+    for(int k = 0; k < n; k++)
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n; j++)
+                if(dist[i][k] < 1e18 && dist[k][j] < 1e18)
+                    dist[i][j] = min(dist[i][j],
+                                     dist[i][k]+dist[k][j]);
+}
+// --- USO ---
+// vector<vector<ll>> dist(n, vector<ll>(n, 1e18));
+// for(int i=0;i<n;i++) dist[i][i] = 0;
+// Para cada arista (u,v,w): dist[u][v] = w;
+// floydWarshall(dist, n);
+// dist[i][j] = distancia minima de i a j.
+// Si dist[i][j]=1e18, no hay camino. Solo para n<=500.
+\end{lstlisting}
+
+% ---- Topological Sort ----
+\subsection{Orden Topol\'ogico}
+\textbf{Tiempo:} $O(V + E)$ \quad \textbf{Espacio:} $O(V)$\\
+\textit{Cu\'ando usarlo:} Ordenar tareas con dependencias (DAG). Detectar ciclos en grafos dirigidos.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Version Kahn (BFS con grado de entrada)
+vi topoKahn(int n, vector<vi> &adj){
+    vector<int> indeg(n, 0);
+    for(int u = 0; u < n; u++)
+        for(int v : adj[u]) indeg[v]++;
+    queue<int> q;
+    for(int i = 0; i < n; i++)
+        if(indeg[i] == 0) q.push(i);
+    vi order;
+    while(!q.empty()){
+        int v = q.front(); q.pop();
+        order.push_back(v);
+        for(int u : adj[v])
+            if(--indeg[u] == 0) q.push(u);
+    }
+    // Si order.size() < n => hay ciclo
+    return order;
+}
+
+// Version DFS
+vi topo_order;
+vector<int> color; // 0=blanco, 1=gris, 2=negro
+bool has_cycle;
+
+void topoDFS(int v, vector<vi> &adj){
+    color[v] = 1;
+    for(int u : adj[v]){
+        if(color[u] == 1){ has_cycle = true; return; }
+        if(color[u] == 0) topoDFS(u, adj);
+    }
+    color[v] = 2;
+    topo_order.push_back(v);
+}
+
+vi topoSort(int n, vector<vi> &adj){
+    color.assign(n, 0);
+    topo_order.clear();
+    has_cycle = false;
+    for(int i = 0; i < n; i++)
+        if(color[i] == 0) topoDFS(i, adj);
+    reverse(all(topo_order));
+    return topo_order;
+}
+// --- USO ---
+// adj = lista de adyacencia DIRIGIDA. adj[u] = {vecinos de u}.
+// vi ord = topoKahn(n, adj); // version BFS
+// if(ord.size() < n) -> HAY CICLO, no existe orden topologico.
+// vi ord = topoSort(n, adj); // version DFS
+// if(has_cycle) -> HAY CICLO.
+// ord[0] va primero, ord[n-1] va ultimo.
+// Ej: si tarea A depende de B, arista B->A.
+\end{lstlisting}
+
+% ---- Kruskal ----
+\subsection{Kruskal (\'Arbol de Expansi\'on M\'inima)}
+\textbf{Tiempo:} $O(E \log E)$ \quad \textbf{Espacio:} $O(V + E)$\\
+\textit{Cu\'ando usarlo:} MST. Requiere DSU. Mejor cuando el grafo se da como lista de aristas.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Requiere struct DSU definido arriba
+ll kruskal(int n, vector<tuple<ll,int,int>> &edges){
+    sort(all(edges)); // ordenar por peso
+    DSU dsu(n);
+    ll cost = 0;
+    int count = 0;
+    for(auto &[w, u, v] : edges){
+        if(dsu.unite(u, v)){
+            cost += w;
+            count++;
+            if(count == n-1) break;
+        }
+    }
+    return cost; // si count < n-1, no es conexo
+}
+// --- USO ---
+// vector<tuple<ll,int,int>> edges; // {peso, u, v}
+// edges.push_back({5, 0, 1}); // arista 0-1 con peso 5
+// ll mstCost = kruskal(n, edges);
+// IMPORTANTE: tupla es {peso, u, v} (peso primero para sort).
+// Requiere DSU definido arriba. Nodos 0-indexed.
+\end{lstlisting}
+
+% ---- Prim ----
+\subsection{Prim (\'Arbol de Expansi\'on M\'inima)}
+\textbf{Tiempo:} $O((V + E) \log V)$ \quad \textbf{Espacio:} $O(V + E)$\\
+\textit{Cu\'ando usarlo:} MST. Mejor cuando el grafo es denso o se da como lista de adyacencia.
+
+\begin{lstlisting}
+// Added -- not in notebook
+ll prim(int n, vector<vector<pii>> &adj){
+    vector<bool> inMST(n, false);
+    // {peso, nodo}
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({0, 0});
+    ll cost = 0;
+    int count = 0;
+    while(!pq.empty() && count < n){
+        auto [w, v] = pq.top(); pq.pop();
+        if(inMST[v]) continue;
+        inMST[v] = true;
+        cost += w;
+        count++;
+        for(auto &[u, wt] : adj[v])
+            if(!inMST[u]) pq.push({wt, u});
+    }
+    return cost;
+}
+// --- USO ---
+// adj: vector<vector<pii>>, pii = {nodo_vecino, peso}.
+// ll mstCost = prim(n, adj); // MST desde nodo 0
+// Empieza desde nodo 0. Si el grafo no es conexo, el MST es parcial.
+// Misma adj que Dijkstra. Kruskal es mas facil si dan lista de aristas.
+\end{lstlisting}
+
+% ---- SCC Kosaraju ----
+\subsection{Componentes Fuertemente Conexas (Kosaraju)}
+\textbf{Tiempo:} $O(V + E)$ \quad \textbf{Espacio:} $O(V + E)$\\
+\textit{Cu\'ando usarlo:} Encontrar SCCs en grafo dirigido. \'Util para 2-SAT, condensaci\'on de grafos.
+
+\begin{lstlisting}
+// Added -- not in notebook
+vector<vi> adj, radj;
+vector<bool> vis;
+vi order, comp;
+
+void dfs1(int v){
+    vis[v] = true;
+    for(int u : adj[v])
+        if(!vis[u]) dfs1(u);
+    order.push_back(v);
+}
+
+void dfs2(int v, int c){
+    comp[v] = c;
+    for(int u : radj[v])
+        if(comp[u] == -1) dfs2(u, c);
+}
+
+int kosaraju(int n){
+    vis.assign(n, false);
+    order.clear();
+    comp.assign(n, -1);
+    for(int i = 0; i < n; i++)
+        if(!vis[i]) dfs1(i);
+    int numSCC = 0;
+    for(int i = n-1; i >= 0; i--){
+        int v = order[i];
+        if(comp[v] == -1)
+            dfs2(v, numSCC++);
+    }
+    return numSCC;
+}
+// --- USO ---
+// Llenar adj (grafo dirigido) y radj (grafo con aristas invertidas):
+// adj[u].push_back(v); radj[v].push_back(u);
+// adj y radj deben tener tamanio n.
+// int numSCC = kosaraju(n);
+// comp[v] = ID de la SCC a la que pertenece v (0-indexed).
+// Nodos con mismo comp[v] estan en la misma componente.
+// numSCC = cantidad total de componentes fuertemente conexas.
+\end{lstlisting}
+
+% ---- Puentes y Articulacion ----
+\subsection{Puentes y Puntos de Articulaci\'on}
+\textbf{Tiempo:} $O(V + E)$ \quad \textbf{Espacio:} $O(V + E)$\\
+\textit{Cu\'ando usarlos:} Encontrar aristas/nodos cuya eliminaci\'on desconecta el grafo.
+
+\begin{lstlisting}
+// Added -- not in notebook
+int timer_ba = 0;
+vector<int> tin_ba, low;
+vector<bool> vis_ba;
+vector<pii> bridges;
+vector<bool> isAP;
+
+void dfs_bridge(int v, int p, vector<vi> &adj){
+    vis_ba[v] = true;
+    tin_ba[v] = low[v] = timer_ba++;
+    int children = 0;
+    for(int u : adj[v]){
+        if(u == p) continue;
+        if(vis_ba[u]){
+            low[v] = min(low[v], tin_ba[u]);
+        } else {
+            children++;
+            dfs_bridge(u, v, adj);
+            low[v] = min(low[v], low[u]);
+            // Puente
+            if(low[u] > tin_ba[v])
+                bridges.push_back({v, u});
+            // Punto de articulacion
+            if(p != -1 && low[u] >= tin_ba[v])
+                isAP[v] = true;
+        }
+    }
+    if(p == -1 && children > 1)
+        isAP[v] = true;
+}
+
+void findBridgesAP(int n, vector<vi> &adj){
+    timer_ba = 0;
+    tin_ba.assign(n, -1);
+    low.assign(n, -1);
+    vis_ba.assign(n, false);
+    isAP.assign(n, false);
+    bridges.clear();
+    for(int i = 0; i < n; i++)
+        if(!vis_ba[i]) dfs_bridge(i, -1, adj);
+}
+// --- USO ---
+// adj = lista de adyacencia NO dirigida.
+// findBridgesAP(n, adj);
+// bridges = vector de pares {u,v} que son puentes (aristas
+//   cuya eliminacion desconecta el grafo).
+// isAP[v] = true si v es punto de articulacion (nodo cuya
+//   eliminacion desconecta el grafo).
+\end{lstlisting}
+
+% ---- LCA ----
+\subsection{LCA (Ancestro Com\'un M\'as Bajo --- Binary Lifting)}
+\textbf{Tiempo:} Preproceso $O(n \log n)$, consulta $O(\log n)$ \quad \textbf{Espacio:} $O(n \log n)$\\
+\textit{Cu\'ando usarlo:} Consultas de ancestro com\'un en \'arboles, distancia en \'arboles.
+
+\textit{Explicación:} Precalcula para cada nodo sus antepasados a potencias de 2. Para consultar LCA, primero sube el más profundo hasta igualar niveles, luego sube a ambos juntos. La distancia entre dos nodos es `depth[u] + depth[v] - 2*depth[lca]`.
+
+\begin{lstlisting}
+// Added -- not in notebook
+const int LOGN = 20;
+int up[200001][LOGN];
+int depth[200001];
+
+void dfs_lca(int v, int p, int d, vector<vi> &adj){
+    up[v][0] = p;
+    depth[v] = d;
+    for(int k = 1; k < LOGN; k++)
+        up[v][k] = up[up[v][k-1]][k-1];
+    for(int u : adj[v])
+        if(u != p) dfs_lca(u, v, d+1, adj);
+}
+
+int lca(int u, int v){
+    if(depth[u] < depth[v]) swap(u, v);
+    int diff = depth[u] - depth[v];
+    for(int k = 0; k < LOGN; k++)
+        if((diff >> k) & 1) u = up[u][k];
+    if(u == v) return u;
+    for(int k = LOGN-1; k >= 0; k--)
+        if(up[u][k] != up[v][k]){
+            u = up[u][k];
+            v = up[v][k];
+        }
+    return up[u][0];
+}
+
+int dist_tree(int u, int v){
+    return depth[u] + depth[v] - 2*depth[lca(u,v)];
+}
+// --- USO ---
+// 1. Construir adj como arbol no dirigido.
+// 2. dfs_lca(root, root, 0, adj); // preprocesar desde la raiz
+//    (root suele ser 0 o 1). Primer y segundo arg = root.
+// 3. int a = lca(u, v);     // ancestro comun mas bajo de u y v
+// 4. int d = dist_tree(u,v); // distancia (aristas) entre u y v en el arbol
+// LOGN=20 soporta hasta 2^20 = 1M nodos. Cambiar si n > 1M.
+\end{lstlisting}
+
+
+
+% ---- HLD ----
+\subsection{Heavy-Light Decomposition (HLD)}
+\textbf{Tiempo:} Preproceso $O(n)$, consulta/update en camino $O(\log^2 n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Consultas/updates sobre caminos en \'arbol: suma, m\'ax, m\'in, etc. Requiere Segment Tree o BIT sobre el arreglo linealizado \texttt{pos[]}.
+
+\textit{Explicaci\'on:} Descompone el \'arbol en cadenas pesadas (heavy paths). Cada nodo pertenece a exactamente una cadena. El arreglo \texttt{pos[]} asigna a cada nodo una posici\'on tal que cada cadena es un segmento contiguo. Las consultas en camino saltan entre cadenas usando LCA impl\'icito.
+
+\begin{lstlisting}
+// Added
+vector<int> parent, depth, heavy, head, pos;
+int cur_pos;
+
+int dfs_hld(int v, vector<vi> &adj){
+    int size = 1, max_c_size = 0;
+    for(int c : adj[v]){
+        if(c == parent[v]) continue;
+        parent[c] = v;
+        depth[c] = depth[v] + 1;
+        int c_size = dfs_hld(c, adj);
+        size += c_size;
+        if(c_size > max_c_size){
+            max_c_size = c_size;
+            heavy[v] = c;
+        }
+    }
+    return size;
+}
+
+void decompose(int v, int h, vector<vi> &adj){
+    head[v] = h; pos[v] = cur_pos++;
+    if(heavy[v] != -1)
+        decompose(heavy[v], h, adj);
+    for(int c : adj[v]){
+        if(c != parent[v] && c != heavy[v])
+            decompose(c, c, adj);
+    }
+}
+
+void initHLD(int n, int root, vector<vi> &adj){
+    parent.assign(n, -1);
+    depth.assign(n, 0);
+    heavy.assign(n, -1);
+    head.assign(n, 0);
+    pos.assign(n, 0);
+    cur_pos = 0;
+    dfs_hld(root, adj);
+    decompose(root, root, adj);
+}
+
+// Query en camino u->v (asume SegTree sobre pos[])
+ll queryPath(int u, int v, SegTree &st){
+    ll res = 0; // identidad: 0 para suma, INF para min
+    while(head[u] != head[v]){
+        if(depth[head[u]] < depth[head[v]]) swap(u, v);
+        res += st.query(pos[head[u]], pos[u]);
+        u = parent[head[u]];
+    }
+    if(depth[u] > depth[v]) swap(u, v);
+    res += st.query(pos[u], pos[v]);
+    return res;
+}
+
+// Update en nodo (puntual)
+void updateNode(int v, ll val, SegTree &st){
+    st.update(pos[v], val);
+}
+// --- USO ---
+// initHLD(n, root, adj); // preprocesar
+// Valores iniciales: for(i) st.update(pos[i], val[i]);
+// queryPath(u, v, st) -> consulta en camino u-v
+// Para update de rango en camino: similar a queryPath con update en st.
+// Ajustar SegTree: suma, max, min, xor, etc.
+// HLD + SegTree permite updates puntuales y consultas en camino.
+// Con Lazy SegTree se pueden hacer updates de rango en camino.
+\end{lstlisting}
+
+
+\end{multicols}
+\newpage
+
+\section{Flujo en Redes y Matching}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- Dinic ----
+\subsection{Max Flow (Dinic)}
+\textbf{Tiempo:} $O(V^2 E)$ general, $O(E\sqrt{V})$ bipartito \quad \textbf{Espacio:} $O(V + E)$\\
+\textit{Cu\'ando usarlo:} Flujo m\'aximo. Acepta capacidades \texttt{ll}. M\'as r\'apido que Edmonds-Karp en ICPC.
+
+\textit{Explicaci\'on:} BFS construye grafos de niveles (aristas con cap $>0$). DFS empuja flujo respetando niveles. Repite hasta que no hay camino $s \to t$. Complejidad pr\'actica mucho mejor que la te\'orica.
+
+\begin{lstlisting}
+// Added
+struct Dinic {
+    struct Edge { int to, rev; ll cap; };
+    vector<vector<Edge>> g;
+    vector<int> level, ptr; int n;
+
+    Dinic(int n) : n(n), g(n), level(n), ptr(n) {}
+
+    void addEdge(int u, int v, ll cap){
+        g[u].push_back({v, (int)g[v].size(), cap});
+        g[v].push_back({u, (int)g[u].size() - 1, 0});
+    }
+
+    bool bfs(int s, int t){
+        fill(all(level), -1);
+        queue<int> q; q.push(s); level[s] = 0;
+        while(!q.empty()){
+            int v = q.front(); q.pop();
+            for(auto &e : g[v])
+                if(e.cap > 0 && level[e.to] == -1){
+                    level[e.to] = level[v] + 1;
+                    q.push(e.to);
+                }
+        }
+        return level[t] != -1;
+    }
+
+    ll dfs(int v, int t, ll flow){
+        if(v == t) return flow;
+        for(int &i = ptr[v]; i < sz(g[v]); i++){
+            Edge &e = g[v][i];
+            if(e.cap > 0 && level[e.to] == level[v] + 1){
+                ll pushed = dfs(e.to, t, min(flow, e.cap));
+                if(pushed > 0){
+                    e.cap -= pushed;
+                    g[e.to][e.rev].cap += pushed;
+                    return pushed;
+                }
+            }
+        }
+        return 0;
+    }
+
+    ll maxFlow(int s, int t){
+        ll flow = 0;
+        while(bfs(s, t)){
+            fill(all(ptr), 0);
+            while(ll pushed = dfs(s, t, LLONG_MAX))
+                flow += pushed;
+        }
+        return flow;
+    }
+};
+// --- USO ---
+// Dinic dinic(n);
+// dinic.addEdge(u,v,cap); // arista dirigida u->v con cap
+// ll f = dinic.maxFlow(source, sink);
+// Min-cut: nodos con level!=-1 vs level==-1 tras ultimo bfs.
+// Grafo no-dirigido: addEdge(u,v,c); addEdge(v,u,c);
+// Flujo max bipartito con super-source/sink:
+//   fuente->izq con cap=1, der->sink con cap=1, izq->der con cap=1
+\end{lstlisting}
+
+% ---- Hopcroft-Karp ----
+\subsection{Max Bipartite Matching (Hopcroft-Karp)}
+\textbf{Tiempo:} $O(E\sqrt{V})$ \quad \textbf{Espacio:} $O(V + E)$\\
+\textit{Cu\'ando usarlo:} Matching m\'aximo en bipartito. M\'as r\'apido que Dinic gen\'erico para este caso.
+
+\textit{Explicaci\'on:} Alterna BFS (encuentra caminos aumentantes m\'as cortos) con DFS (aplica todos los disjuntos en paralelo). La distancia crece cada iteraci\'on $\to O(\sqrt{V})$ fases.
+
+\begin{lstlisting}
+// Added
+struct HopcroftKarp {
+    int n, m; vector<vi> g;
+    vi pairU, pairV, dist;
+
+    HopcroftKarp(int n, int m) : n(n), m(m), g(n),
+        pairU(n, -1), pairV(m, -1), dist(n) {}
+
+    void addEdge(int u, int v){ g[u].push_back(v); }
+
+    bool bfs(){
+        queue<int> q;
+        for(int u = 0; u < n; u++){
+            if(pairU[u] == -1){ dist[u] = 0; q.push(u); }
+            else dist[u] = -1;
+        }
+        bool found = false;
+        while(!q.empty()){
+            int u = q.front(); q.pop();
+            for(int v : g[u]){
+                if(pairV[v] == -1) found = true;
+                else if(dist[pairV[v]] == -1){
+                    dist[pairV[v]] = dist[u] + 1;
+                    q.push(pairV[v]);
+                }
+            }
+        }
+        return found;
+    }
+
+    bool dfs(int u){
+        for(int v : g[u]){
+            if(pairV[v] == -1 || 
+               (dist[pairV[v]] == dist[u]+1 && dfs(pairV[v]))){
+                pairU[u] = v; pairV[v] = u; return true;
+            }
+        }
+        dist[u] = -1; return false;
+    }
+
+    int maxMatching(){
+        int match = 0;
+        while(bfs())
+            for(int u = 0; u < n; u++)
+                if(pairU[u] == -1 && dfs(u)) match++;
+        return match;
+    }
+};
+// --- USO ---
+// HopcroftKarp hk(nIzq, nDer);
+// hk.addEdge(i, j); // arista de izq i a der j
+// int maxMatch = hk.maxMatching();
+// pairU[i] = nodo der emparejado (o -1 si libre).
+// Min Vertex Cover (K\"onig):
+//   izq en cover = {u | dist[u] == -1}
+//   der en cover = {v | dist[pairV[v]] != -1}
+\end{lstlisting}
+
+\end{multicols}
+\newpage
+
+% ============================================================
+\section{Flujo en Redes II}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- 2-SAT ----
+\subsection{2-SAT}
+\textbf{Tiempo:} $O(V + E)$ \quad \textbf{Espacio:} $O(V + E)$\\
+\textit{Cu\'ando usarlo:} Variables booleanas $x_i$, cl\'ausulas $(a \lor b)$. Determinar si hay asignaci\'on que satisface todas. Trigger t\'ipico: $n \leq 10^5$.
+
+\textit{Explicaci\'on:} $(a \lor b) \equiv (\neg a \to b) \land (\neg b \to a)$. Construye grafo de implicaciones $2n$ nodos. Si $x$ y $\neg x$ en misma SCC, insatisfactible. Asignaci\'on: $x_i$ true si comp$[x_i] >$ comp$[\neg x_i]$.
+
+\begin{lstlisting}
+// Added -- usa Kosaraju de secci\'on Grafos
+// Mapeo: variable i positiva -> i, negada -> i+n
+// adj y radj deben tener 2*n nodos.
+
+int neg2(int x, int n){ return x < n ? x + n : x - n; }
+
+void addClause(int a, int b, vector<vi>& adj, vector<vi>& radj){
+    adj[neg2(a,n)].push_back(b);
+    adj[neg2(b,n)].push_back(a);
+    radj[b].push_back(neg2(a,n));
+    radj[a].push_back(neg2(b,n));
+}
+
+// Retorna asignacion. Vacio si no existe.
+vector<bool> solve2SAT(int n, vector<pii>& clauses){
+    int N = 2 * n;
+    adj.assign(N, {}); radj.assign(N, {});
+    for(auto [a, b] : clauses) addClause(a, b, adj, radj);
+    int nscc = kosaraju(N);
+    vector<bool> ans(n);
+    for(int i = 0; i < n; i++){
+        if(comp[i] == comp[i + n]) return {};
+        ans[i] = (comp[i] > comp[i + n]);
+    }
+    return ans;
+}
+// --- USO ---
+// n = numero de variables. clauses = {{a,b}, ...}
+// a positivo = i, negativo = i+n.
+// Ej: (x0 or ~x1) -> {0, 1+n}
+// Requiere Kosaraju definido (adj, radj, comp globales).
+// Adaptar segun si Kosaraju usa variables globales o locales.
+\end{lstlisting}
+
+% ---- Min Cost Max Flow ----
+\subsection{Min-Cost Max-Flow (Dijkstra + Potencial)}
+\textbf{Tiempo:} $O(F \cdot E \log V)$ \quad \textbf{Espacio:} $O(V + E)$\\
+\textit{Cu\'ando usarlo:} Flujo con costo por unidad. Capacidades y costos en \texttt{ll}. Acepta costos negativos.
+
+\begin{lstlisting}
+// Added
+struct MCMF {
+    struct Edge { int to, rev; ll cap, cost; };
+    vector<vector<Edge>> g; int n;
+    MCMF(int n) : n(n), g(n) {}
+
+    void addEdge(int u, int v, ll cap, ll cost){
+        g[u].push_back({v,(int)g[v].size(),cap,cost});
+        g[v].push_back({u,(int)g[u].size()-1,0,-cost});
+    }
+
+    pair<ll,ll> minCostFlow(int s, int t){
+        ll flow = 0, cost = 0;
+        vector<ll> dist(n), pot(n, 0);
+        vi parent(n), pedge(n);
+        while(true){
+            fill(all(dist), 1e18); dist[s] = 0;
+            priority_queue<pll,vector<pll>,greater<pll>> pq;
+            pq.push({0, s});
+            while(!pq.empty()){
+                auto [d, v] = pq.top(); pq.pop();
+                if(d > dist[v]) continue;
+                for(int i = 0; i < sz(g[v]); i++){
+                    Edge &e = g[v][i];
+                    ll nd = d + e.cost + pot[v] - pot[e.to];
+                    if(e.cap > 0 && nd < dist[e.to]){
+                        dist[e.to] = nd;
+                        parent[e.to] = v; pedge[e.to] = i;
+                        pq.push({nd, e.to});
+                    }
+                }
+            }
+            if(dist[t] == 1e18) break;
+            for(int i = 0; i < n; i++)
+                if(dist[i] < 1e18) pot[i] += dist[i];
+            ll push = 1e18;
+            for(int v = t; v != s; v = parent[v])
+                push = min(push,
+                    g[parent[v]][pedge[v]].cap);
+            for(int v = t; v != s; v = parent[v]){
+                Edge &e = g[parent[v]][pedge[v]];
+                e.cap -= push; g[v][e.rev].cap += push;
+                cost += push * e.cost;
+            }
+            flow += push;
+        }
+        return {flow, cost};
+    }
+};
+// --- USO ---
+// MCMF mcmf(n);
+// mcmf.addEdge(u,v,cap,cost);
+// auto [flow, cost] = mcmf.minCostFlow(s, t);
+// Usa potencial de Johnson para costos negativos.
+\end{lstlisting}
+
+\end{multicols}
+\newpage
+
+\section{Teor\'ia de N\'umeros}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- Criba ----
+\subsection{Criba de Erat\'ostenes}
+\textbf{Tiempo:} $O(n \log \log n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarla:} Obtener todos los primos hasta $n$. $n \leq 10^7$ cabe en memoria.
+
+\textit{Ejemplo:} Marca como compuesto todo m\'ultiplo de cada primo encontrado, empezando desde $i^2$. Cuidado con $n = 0$ \'o $1$ (no son primos). Para $n > 10^7$, considerar criba segmentada.
+
+\begin{lstlisting}
+// Del notebook: clasicos/TeoriaDeNumeros/criba.cpp
+vector<bool> criba(int n){
+    vector<bool> primo(n+1, true);
+    primo[0] = primo[1] = false;
+    for(int i = 2; i*i <= n; i++){
+        if(primo[i])
+            for(int j = i*i; j <= n; j += i)
+                primo[j] = false;
+    }
+    return primo;
+}
+\end{lstlisting}
+
+\textit{Aplicado en:} \textbf{776B (Codeforces)} --- Clasificar n\'umeros usando la criba para separar primos de compuestos.
+
+\begin{lstlisting}
+// vjudge/776B-CodeForces.cpp (extracto)
+vector<bool> isPrime = criba(100001);
+for(int i = 2; i <= k+1; i++){
+    if(isPrime[i]) cout << 1 << ' ';
+    else cout << 2 << ' ';
+}
+\end{lstlisting}
+
+% ---- Factorizacion ----
+\subsection{Factorizaci\'on en Primos}
+\textbf{Tiempo:} $O(\sqrt{n})$ \quad \textbf{Espacio:} $O(\log n)$\\
+\textit{Cu\'ando usarla:} Obtener factores primos de un n\'umero. Contar divisores, sumar divisores, MCD/MCM.
+
+\textit{Ejemplo:} Divide por 2, luego por impares hasta $\sqrt{n}$. Si queda $n > 1$, ese residuo es primo. Cuidado con $n = 1$ (no tiene factores primos).
+
+\begin{lstlisting}
+// Del notebook: clasicos/TeoriaDeNumeros/factorizacion_primos.cpp
+vector<lli> factorizar(lli n){
+    vector<lli> sol;
+    while(n % 2 == 0)
+        sol.push_back(2), n /= 2;
+    for(lli d = 3; d*d <= n; d += 2)
+        while(n % d == 0) sol.push_back(d), n /= d;
+    if(n > 1) sol.push_back(n);
+    return sol;
+}
+
+// Version con conteo de exponentes
+unordered_map<lli,lli> factorizarMap(lli n){
+    unordered_map<lli,lli> sol;
+    while(n % 2 == 0) sol[2]++, n /= 2;
+    for(lli d = 3; d*d <= n; d += 2)
+        while(n % d == 0) sol[d]++, n /= d;
+    if(n > 1) sol[n]++;
+    return sol;
+}
+\end{lstlisting}
+
+\textit{Aplicado en:} \textbf{Product and GCD (CF)} --- Dado $p = \prod a_i$, encontrar el GCD m\'aximo posible distribuyendo factores.
+
+\begin{lstlisting}
+// practica-cpc/product-and-gcd.cpp (extracto)
+auto f = factorizarMap(p);
+ll k = 1;
+for(auto &[base, exp] : f)
+    k *= binpow(base, exp / n);
+\end{lstlisting}
+
+% ---- Exponenciacion modular ----
+\subsection{Exponenciaci\'on Modular R\'apida}
+\textbf{Tiempo:} $O(\log b)$ \quad \textbf{Espacio:} $O(1)$ iterativo, $O(\log b)$ recursivo\\
+\textit{Cu\'ando usarla:} Calcular $a^b \mod m$ eficientemente. Base de inverso modular, combinatoria.
+
+\begin{lstlisting}
+// Del notebook: clasicos/TeoriaDeNumeros/potencia_modulo.cpp
+// Version recursiva
+long long binpow(long long a, long long b, long long m){
+    if(b == 0) return 1;
+    if(b % 2) return binpow(a, b-1, m) * a % m;
+    long long r = binpow(a, b/2, m);
+    return r * r % m;
+}
+
+// Version iterativa (preferida, sin stack overflow)
+// Added -- not in notebook
+long long binpow_iter(long long a, long long b, long long m){
+    long long res = 1;
+    a %= m;
+    while(b > 0){
+        if(b & 1) res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
+}
+\end{lstlisting}
+
+\textit{Aplicado en:} \textbf{The Last Digit (SPOJ)} --- Calcular $a^b \mod 10$ para obtener el \'ultimo d\'igito.
+
+% ---- GCD / LCM ----
+\subsection{GCD y LCM}
+\textbf{Tiempo:} $O(\log(\min(a,b)))$ \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarlos:} Simplificar fracciones, encontrar per\'iodos, problemas de divisibilidad.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// C++17 tiene __gcd() y en <numeric>: gcd(), lcm()
+ll gcd(ll a, ll b){ return b ? gcd(b, a%b) : a; }
+ll lcm(ll a, ll b){ return a / gcd(a,b) * b; }
+// CUIDADO: a/gcd primero para evitar overflow
+// GCD de un arreglo:
+// ll g = 0; for(ll x : v) g = gcd(g, x);
+\end{lstlisting}
+
+% ---- Euclides Extendido ----
+\subsection{Euclides Extendido}
+\textbf{Tiempo:} $O(\log(\min(a,b)))$ \quad \textbf{Espacio:} $O(\log(\min(a,b)))$\\
+\textit{Cu\'ando usarlo:} Encontrar $x, y$ tales que $ax + by = \gcd(a,b)$. Base del inverso modular.
+
+\begin{lstlisting}
+// Added -- not in notebook
+ll extgcd(ll a, ll b, ll &x, ll &y){
+    if(b == 0){
+        x = 1; y = 0;
+        return a;
+    }
+    ll x1, y1;
+    ll g = extgcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - (a / b) * y1;
+    return g;
+}
+// --- USO ---
+// ll x, y;
+// ll g = extgcd(a, b, x, y); // encuentra x,y tal que a*x + b*y = g
+// g = gcd(a,b). x e y pueden ser negativos.
+// Ej: extgcd(35, 15, x, y) -> g=5, x=1, y=-2 (35*1 + 15*(-2) = 5)
+// Sirve para resolver ecuaciones lineales ax + by = c
+// (tiene solucion sii gcd(a,b) | c).
+\end{lstlisting}
+
+% ---- Inverso Modular ----
+\subsection{Inverso Modular}
+\textbf{Tiempo:} $O(\log m)$ \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarlo:} Dividir bajo m\'odulo: $a/b \mod m = a \cdot b^{-1} \mod m$. Necesario para combinatoria modular.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Metodo 1: Fermat (solo si m es primo)
+ll modinv(ll a, ll m){
+    return binpow_iter(a, m-2, m);
+}
+
+// Metodo 2: Euclides extendido (m no necesita ser primo)
+ll modinv_ext(ll a, ll m){
+    ll x, y;
+    ll g = extgcd(a, m, x, y);
+    if(g != 1) return -1; // no existe
+    return (x % m + m) % m;
+}
+// --- USO ---
+// ll inv = modinv(3, 1e9+7);   // inverso de 3 mod 1e9+7
+// (a / b) % m = a % m * modinv(b, m) % m
+// Ej: (6/3) mod 7 = 6 * modinv(3,7) % 7 = 6*5%7 = 2
+// modinv (Fermat): solo si m es PRIMO. Mas simple.
+// modinv_ext: funciona con cualquier m, pero gcd(a,m) debe ser 1.
+// Retorna -1 si el inverso no existe.
+\end{lstlisting}
+
+% ---- Combinatoria ----
+\subsection{Combinatoria ($\binom{n}{r} \mod p$)}
+\textbf{Tiempo:} Preproceso $O(n)$, consulta $O(1)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarla:} Contar combinaciones bajo m\'odulo primo. Caminos en cuadr\'iculas, distribuciones.
+
+\begin{lstlisting}
+// Added -- not in notebook
+const int MAXN = 2000001;
+const ll MOD_C = 1e9 + 7;
+ll fact[MAXN], inv_fact[MAXN];
+
+void precompute(){
+    fact[0] = 1;
+    for(int i = 1; i < MAXN; i++)
+        fact[i] = fact[i-1] * i % MOD_C;
+    inv_fact[MAXN-1] = binpow_iter(fact[MAXN-1], MOD_C-2, MOD_C);
+    for(int i = MAXN-2; i >= 0; i--)
+        inv_fact[i] = inv_fact[i+1] * (i+1) % MOD_C;
+}
+
+ll nCr(int n, int r){
+    if(r < 0 || r > n) return 0;
+    return fact[n] % MOD_C * inv_fact[r] % MOD_C
+                         * inv_fact[n-r] % MOD_C;
+}
+// --- USO ---
+// precompute();       // llamar UNA VEZ al inicio del main
+// ll c = nCr(10, 3); // C(10,3) mod 1e9+7 = 120
+// fact[n] = n! mod p. inv_fact[n] = (n!)^{-1} mod p.
+// Requiere binpow_iter. MOD_C DEBE ser primo.
+// MAXN debe ser >= max n que uses + 1.
+\end{lstlisting}
+
+% ---- CRT ----
+\subsection{Teorema Chino del Resto (CRT)}
+\textbf{Tiempo:} $O(n \log M)$ \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarlo:} Resolver sistema $x \equiv r_i \pmod{m_i}$ con $m_i$ coprimos dos a dos.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Dados vectores r[] y m[] de tamanio n,
+// encuentra x tal que x = r[i] (mod m[i])
+// Requiere extgcd definido arriba.
+pair<ll,ll> crt(vector<ll> &r, vector<ll> &m){
+    ll curR = r[0], curM = m[0];
+    for(int i = 1; i < (int)r.size(); i++){
+        ll x, y;
+        ll g = extgcd(curM, m[i], x, y);
+        if((r[i] - curR) % g != 0)
+            return {-1, -1}; // sin solucion
+        ll lcm_val = curM / g * m[i];
+        ll diff = (r[i] - curR) / g;
+        // Usar __int128 para evitar overflow
+        ll shift = (__int128)diff * x % (m[i]/g);
+        curR = curR + curM * shift;
+        curM = lcm_val;
+        curR = ((curR % curM) + curM) % curM;
+    }
+    return {curR, curM};
+}
+// --- USO ---
+// Resolver: x = 2 (mod 3), x = 3 (mod 5), x = 2 (mod 7)
+// vector<ll> r = {2, 3, 2}, m = {3, 5, 7};
+// auto [x, lcm] = crt(r, m); // x=23, lcm=105
+// Solucion: x + k*lcm para cualquier k >= 0.
+// Si retorna {-1,-1}, no hay solucion.
+// m[i] NO necesitan ser primos, pero si coprimos dos a dos.
+// Requiere extgcd definido arriba.
+\end{lstlisting}
+
+% ---- SPF ----
+\subsection{SPF — Factorizaci\'on en $O(\log n)$}
+\textbf{Tiempo:} Preproceso $O(n \log \log n)$, consulta $O(\log n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Factorizar muchos n\'umeros $\leq n$. $n \leq 10^7$ en ICPC ($\approx$ 10 MB). Para $n > 10^7$, usar Pollard.
+
+\textit{Explicaci\'on:} Precalcula el factor primo m\'as peque\~no (SPF) de cada n\'umero. Factoriza $x \leq n$ en $O(\log x)$ dividiendo por su SPF. Base para totient, mobius, n\'umero de divisores.
+
+\begin{lstlisting}
+// Added
+const int MAXS = 10000001;
+int spf[MAXS];
+
+void buildSPF(){
+    iota(spf, spf + MAXS, 0);
+    for(int i = 2; i * i < MAXS; i++)
+        if(spf[i] == i)
+            for(int j = i * i; j < MAXS; j += i)
+                if(spf[j] == j) spf[j] = i;
+}
+
+vector<int> factorize(int x){
+    vector<int> f;
+    while(x > 1){ f.push_back(spf[x]); x /= spf[x]; }
+    return f;
+}
+
+// Pares {primo, exponente}
+vector<pii> factorizeExp(int x){
+    vector<pii> f;
+    while(x > 1){
+        int p = spf[x], cnt = 0;
+        while(spf[x] == p){ cnt++; x /= p; }
+        f.push_back({p, cnt});
+    }
+    return f;
+}
+// --- USO ---
+// buildSPF(); auto f = factorize(84); // {2,2,3,7}
+// MAXS=10^7 ocupa 40MB con int; usar short para 20MB.
+// Con SPF puedes precomputar totient, mobius, etc.
+\end{lstlisting}
+
+% ---- Euler Totient ----
+\subsection{Funci\'on $\varphi$ de Euler (Totient)}
+\textbf{Tiempo:} $O(\sqrt{n})$ sin SPF, $O(\log n)$ con SPF \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarlo:} Contar coprimos con $n$. $\sum_{d|n}\varphi(d)=n$. \'Util para teorema de Euler: $a^{\varphi(m)}\equiv 1\pmod m$ si $\gcd(a,m)=1$.
+
+\begin{lstlisting}
+// Added
+ll phi(ll n){
+    ll res = n;
+    for(ll p = 2; p * p <= n; p++){
+        if(n % p == 0){
+            while(n % p == 0) n /= p;
+            res -= res / p;
+        }
+    }
+    if(n > 1) res -= res / n;
+    return res;
+}
+
+// O(log n) con SPF (requiere buildSPF)
+ll phiSPF(int x){
+    ll res = x;
+    while(x > 1){
+        int p = spf[x]; res -= res / p;
+        while(spf[x] == p) x /= p;
+    }
+    return res;
+}
+// --- USO ---
+// phi(12) = 4  (1,5,7,11 son coprimos con 12)
+\end{lstlisting}
+
+% ---- Miller-Rabin ----
+\subsection{Miller-Rabin (Determin\'istico 64-bit)}
+\textbf{Tiempo:} $O(\log n)$ \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarlo:} Test de primalidad para $n < 2^{64}$ ($\approx 1.8\times10^{19}$). \textbf{NO} usar para $n \geq 2^{64}$.
+
+\textit{Explicaci\'on:} $n-1 = d\cdot2^r$, $d$ impar. Para bases fijas se chequea $a^d, a^{2d}, \ldots, a^{2^{r-1}d} \bmod n$. Si ninguna es $-1$ ni $1$ al inicio, es compuesto.
+
+\begin{lstlisting}
+// Added -- deterministico para n < 2^64
+using u128 = __int128;
+
+ll mulmod(ll a, ll b, ll m){
+    return (ll)((u128)a * b % m);
+}
+
+ll binpowMR(ll a, ll d, ll m){
+    ll res = 1;
+    while(d){
+        if(d & 1) res = mulmod(res, a, m);
+        a = mulmod(a, a, m);
+        d >>= 1;
+    }
+    return res;
+}
+
+bool isPrime(ll n){
+    if(n < 2) return false;
+    for(ll p : {2,3,5,7,11,13,17,19,23,29,31,37}){
+        if(n == p) return true;
+        if(n % p == 0) return false;
+    }
+    int r = 0; ll d = n - 1;
+    while((d & 1) == 0){ d >>= 1; r++; }
+    // Bases Sinclair (2011): cubren n < 2^64
+    for(ll a : {2,325,9375,28178,450775,9780504,1795265022}){
+        if(a % n == 0) continue;
+        ll x = binpowMR(a, d, n);
+        if(x == 1 || x == n - 1) continue;
+        bool comp = true;
+        for(int i = 0; i < r - 1; i++){
+            x = mulmod(x, x, n);
+            if(x == n - 1){ comp = false; break; }
+        }
+        if(comp) return false;
+    }
+    return true;
+}
+// --- USO ---
+// isPrime(999999999999999989LL) -> true
+// Si n cabe en 32 bits, bastan bases {2,7,61}.
+\end{lstlisting}
+
+% ---- Pollard Rho ----
+\subsection{Pollard's Rho (Factorizaci\'on grandes)}
+\textbf{Tiempo:} $O(n^{1/4})$ esperado \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarlo:} Factorizar n\'umeros entre $10^7$ y $10^{18}$. Pocos n\'umeros, no conviene SPF.
+
+\begin{lstlisting}
+// Added -- Requiere isPrime, mulmod, gcd de arriba
+ll pollardRho(ll n){
+    if(n % 2 == 0) return 2;
+    if(n % 3 == 0) return 3;
+    while(true){
+        ll c = rand() % (n - 1) + 1;
+        auto f = [&](ll x){ return (mulmod(x,x,n)+c) % n; };
+        ll x = 2, y = 2, d = 1;
+        while(d == 1){
+            x = f(x); y = f(f(y));
+            d = gcd(abs(x - y), n);
+        }
+        if(d != n) return d;
+    }
+}
+
+void factorizeBig(ll n, vector<ll> &f){
+    if(n == 1) return;
+    if(isPrime(n)){ f.push_back(n); return; }
+    ll d = pollardRho(n);
+    factorizeBig(d, f); factorizeBig(n/d, f);
+}
+// --- USO ---
+// vector<ll> f; factorizeBig(1e18+3, f); sort(all(f));
+// srand(time(0)) en main si quieres variabilidad.
+\end{lstlisting}
+
+
+\end{multicols}
+\newpage
+
+
+% ============================================================
+\section{Teor\'ia de Juegos}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- Sprague-Grundy / Nim ----
+\subsection{Juego de Nim y Teorema de Sprague-Grundy}
+\textbf{Tiempo:} $O(n)$ (Nim puro) \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarla:} Juegos combinatorios imparciales donde dos jugadores alternan turnos y pierde quien no puede mover. El XOR de los tama\~nos de las pilas determina el ganador.
+
+\textit{Resultado clave:} En Nim con pilas $a_1, a_2, \ldots, a_n$, el primer jugador gana si y solo si $a_1 \oplus a_2 \oplus \cdots \oplus a_n \neq 0$.
+
+\begin{lstlisting}
+// Nim puro: determina si el primer jugador gana
+bool nimGana(vector<int>& pilas){
+    int xorSum = 0;
+    for(int x : pilas) xorSum ^= x;
+    return xorSum != 0; // true = gana J1
+}
+\end{lstlisting}
+
+\subsubsection{Teorema de Sprague-Grundy}
+Todo juego combinatorio imparcial es equivalente a una pila de Nim de tama\~no $g$ (el \textbf{n\'umero de Grundy}).
+
+\begin{itemize}
+  \item $g(\text{posici\'on perdedora}) = 0$
+  \item $g(p) = \text{mex}(\{g(q) : q \in \text{movimientos}(p)\})$
+  \item \textbf{mex} (minimum excludant): menor entero $\geq 0$ que no est\'a en el conjunto.
+  \item Para juegos compuestos de subjuegos independientes: $g = g_1 \oplus g_2 \oplus \cdots \oplus g_k$.
+\end{itemize}
+
+\begin{lstlisting}
+// Calcula el numero de Grundy para posiciones 0..n
+// moves: conjunto de movimientos permitidos
+vector<int> grundy(int n, vector<int>& moves){
+    vector<int> g(n+1, 0);
+    for(int i = 1; i <= n; i++){
+        set<int> alcanzables;
+        for(int m : moves)
+            if(i - m >= 0)
+                alcanzables.insert(g[i - m]);
+        // mex
+        int mex = 0;
+        while(alcanzables.count(mex)) mex++;
+        g[i] = mex;
+    }
+    return g;
+}
+\end{lstlisting}
+
+\textit{Ejemplo:} Juego donde puedes quitar 1, 2 \'o 3 piedras. $g(0)=0$, $g(1)=1$, $g(2)=2$, $g(3)=3$, $g(4)=0$, $g(5)=1$, \ldots\ Per\'iodo 4. Gana J1 si $n \bmod 4 \neq 0$.
+
+% ---- Juegos comunes ----
+\subsection{Juegos Cl\'asicos}
+
+\subsubsection{Nim con restricci\'on (Bounded Nim)}
+Si cada turno puedes quitar entre 1 y $k$ piedras de una pila de $n$: gana J1 si $n \bmod (k+1) \neq 0$.
+
+\subsubsection{Staircase Nim}
+Pilas en escalera $a_0, a_1, \ldots, a_n$. En cada turno, mueves piedras de pila $i$ a pila $i-1$. Gana J1 si el XOR de las pilas en \'indices \textbf{impares} es $\neq 0$.
+
+\begin{lstlisting}
+bool staircaseNim(vector<int>& pilas){
+    int xorSum = 0;
+    for(int i = 1; i < (int)pilas.size(); i += 2)
+        xorSum ^= pilas[i];
+    return xorSum != 0;
+}
+\end{lstlisting}
+
+\subsubsection{Juego de Euclides}
+Dos n\'umeros $(a, b)$ con $a \geq b$. En cada turno, restas un m\'ultiplo positivo de $b$ a $a$ (sin que quede negativo). Pierde quien no puede mover (cuando $b = 0$).
+
+\begin{lstlisting}
+// Retorna true si el jugador actual gana
+bool euclidGame(ll a, ll b){
+    if(b == 0) return false;
+    if(a < b) swap(a, b);
+    if(a % b == 0) return true;
+    if(a >= 2*b) return true;
+    return !euclidGame(b, a - b);
+}
+\end{lstlisting}
+
+% ---- Tabla rapida ----
+\subsection{Referencia R\'apida}
+
+\begin{center}
+\small
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Juego} & \textbf{Gana J1 si} \\
+\hline
+Nim puro & $\bigoplus a_i \neq 0$ \\
+\hline
+Quitar 1\ldots k & $n \bmod (k+1) \neq 0$ \\
+\hline
+Staircase Nim & $\bigoplus a_{\text{impar}} \neq 0$ \\
+\hline
+Wythoff ($a,b$) & $(a,b) \neq (\lfloor k\phi \rfloor, \lfloor k\phi^2 \rfloor)$ \\
+\hline
+Euclides & ver recursion arriba \\
+\hline
+General & $g(\text{pos}) \neq 0$ (S-G) \\
+\hline
+\end{tabular}
+\end{center}
+
+Donde $\phi = \frac{1+\sqrt{5}}{2} \approx 1.618$ (raz\'on \'aurea).
+
+\end{multicols}
+\newpage
+
+% ============================================================
+\section{Cadenas (Strings)}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- KMP ----
+\subsection{KMP (Knuth-Morris-Pratt)}
+\textbf{Tiempo:} $O(n + m)$ \quad \textbf{Espacio:} $O(m)$\\
+\textit{Cu\'ando usarlo:} B\'usqueda de patr\'on en texto. Encontrar todas las ocurrencias de $P$ en $T$.
+
+\textit{Explicación:} Precalcula el array `lps` (longest proper prefix which is also suffix). Luego recorre el texto usando dos índices. Cuando hay mismatch, se mueve el índice del patrón según `lps`.
+
+\begin{lstlisting}
+// Added -- not in notebook
+vector<int> computeLPS(const string &p){
+    int m = p.size();
+    vector<int> lps(m, 0);
+    int len = 0, i = 1;
+    while(i < m){
+        if(p[i] == p[len]){
+            lps[i++] = ++len;
+        } else {
+            if(len) len = lps[len-1];
+            else lps[i++] = 0;
+        }
+    }
+    return lps;
+}
+
+vector<int> kmpSearch(const string &text, const string &pat){
+    int n = text.size(), m = pat.size();
+    vector<int> lps = computeLPS(pat);
+    vector<int> matches;
+    int i = 0, j = 0;
+    while(i < n){
+        if(text[i] == pat[j]){
+            i++; j++;
+        }
+        if(j == m){
+            matches.push_back(i - j);
+            j = lps[j-1];
+        } else if(i < n && text[i] != pat[j]){
+            if(j) j = lps[j-1];
+            else i++;
+        }
+    }
+    return matches;
+}
+// --- USO ---
+// auto pos = kmpSearch("abcabcabc", "abc");
+// pos = {0, 3, 6} -> posiciones donde aparece "abc" en el texto.
+// computeLPS(pat) solo se necesita internamente.
+// lps[i] = largo del prefijo mas largo de pat que tambien es
+// sufijo de pat[0..i]. Util solo para encontrar periodo del patron.
+\end{lstlisting}
+
+% ---- Z-Algorithm ----
+\subsection{Z-Algorithm}
+\textbf{Tiempo:} $O(n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Alternativa a KMP. $z[i]$ = longitud del prefijo m\'as largo de $s$ que coincide empezando en $s[i]$.
+
+\begin{lstlisting}
+// Added -- not in notebook
+vector<int> zFunction(const string &s){
+    int n = s.size();
+    vector<int> z(n, 0);
+    int l = 0, r = 0;
+    for(int i = 1; i < n; i++){
+        if(i < r)
+            z[i] = min(r - i, z[i - l]);
+        while(i + z[i] < n && s[z[i]] == s[i + z[i]])
+            z[i]++;
+        if(i + z[i] > r){
+            l = i;
+            r = i + z[i];
+        }
+    }
+    return z;
+}
+
+// Buscar patron P en texto T:
+// string s = P + "$" + T;
+// auto z = zFunction(s);
+// for(int i = P.size()+1; i < s.size(); i++)
+//     if(z[i] == P.size()) // match en posicion i-P.size()-1
+\end{lstlisting}
+
+% ---- String Hashing ----
+\subsection{Hashing de Cadenas (Polynomial Rolling)}
+\textbf{Tiempo:} Preproceso $O(n)$, consulta subcadena $O(1)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Comparar subcadenas en $O(1)$, encontrar subcadenas repetidas, Rabin-Karp.
+
+\textit{Explicación:} Calcula un hash para cada prefijo. El hash de `s[l..r]` se obtiene como `(h[r+1] - h[l]*pw[r-l+1]) mod M`. Usa dos módulos grandes para evitar colisiones (doble hash).
+
+\begin{lstlisting}
+// Added -- not in notebook
+struct StringHash {
+    vector<ll> h, pw;
+    ll base, mod;
+
+    StringHash(const string &s, ll base = 131,
+               ll mod = 1e9+7)
+        : base(base), mod(mod) {
+        int n = s.size();
+        h.resize(n+1, 0);
+        pw.resize(n+1, 1);
+        for(int i = 0; i < n; i++){
+            h[i+1] = (h[i] * base + s[i]) % mod;
+            pw[i+1] = pw[i] * base % mod;
+        }
+    }
+
+    // Hash de s[l..r] (0-indexed, inclusive)
+    ll get(int l, int r){
+        return (h[r+1] - h[l] * pw[r-l+1] % mod + mod*2) % mod;
+    }
+};
+// --- USO ---
+// StringHash h(s);           // preprocesar string s
+// ll ha = h.get(0, 4);       // hash de s[0..4] (0-indexed, inclusive)
+// ll hb = h.get(5, 9);       // hash de s[5..9]
+// if(ha == hb) -> subcadenas probablemente iguales.
+// Para reducir colisiones, usar doble hash:
+// StringHash h1(s, 131, 1e9+7);
+// StringHash h2(s, 137, 1e9+9);
+// Comparar pares (h1.get(l,r), h2.get(l,r))
+\end{lstlisting}
+
+% ---- Suffix Array ----
+\subsection{Suffix Array (B\'asico)}
+\textbf{Tiempo:} $O(n \log^2 n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Subcadena com\'un m\'as larga, n\'umero de subcadenas distintas, b\'usqueda binaria sobre sufijos.
+
+\begin{lstlisting}
+// Added -- not in notebook
+vector<int> suffixArray(const string &s){
+    int n = s.size();
+    vector<int> sa(n), rank_(n), tmp(n);
+    iota(sa.begin(), sa.end(), 0);
+    for(int i = 0; i < n; i++) rank_[i] = s[i];
+    for(int k = 1; k < n; k <<= 1){
+        auto cmp = [&](int a, int b){
+            if(rank_[a] != rank_[b]) return rank_[a] < rank_[b];
+            int ra = a+k < n ? rank_[a+k] : -1;
+            int rb = b+k < n ? rank_[b+k] : -1;
+            return ra < rb;
+        };
+        sort(sa.begin(), sa.end(), cmp);
+        tmp[sa[0]] = 0;
+        for(int i = 1; i < n; i++)
+            tmp[sa[i]] = tmp[sa[i-1]] + cmp(sa[i-1], sa[i]);
+        rank_ = tmp;
+        if(rank_[sa[n-1]] == n-1) break;
+    }
+    return sa;
+}
+
+// LCP array (Kasai)
+vector<int> buildLCP(const string &s, const vector<int> &sa){
+    int n = s.size();
+    vector<int> rank_(n), lcp(n-1, 0);
+    for(int i = 0; i < n; i++) rank_[sa[i]] = i;
+    int k = 0;
+    for(int i = 0; i < n; i++){
+        if(rank_[i] == n-1){ k = 0; continue; }
+        int j = sa[rank_[i]+1];
+        while(i+k < n && j+k < n && s[i+k] == s[j+k]) k++;
+        lcp[rank_[i]] = k;
+        if(k) k--;
+    }
+    return lcp;
+}
+// --- USO ---
+// auto sa = suffixArray(s);   // sa[i] = posicion del i-esimo
+//   sufijo en orden lexicografico. Ej: s="banana",
+//   sa = {5,3,1,0,4,2} -> sufijos ordenados: "a","ana","anana",...
+// auto lcp = buildLCP(s, sa); // lcp[i] = prefijo comun mas
+//   largo entre sa[i] y sa[i+1] (sufijos consecutivos en orden).
+// Subcadenas distintas = n*(n+1)/2 - sum(lcp[i]).
+// Subcadena comun mas larga de 2 strings: concatenar con
+// separador s1+"$"+s2, construir SA+LCP, buscar max lcp[i]
+// donde sa[i] y sa[i+1] pertenecen a strings distintos.
+\end{lstlisting}
+
+
+% ---- Manacher ----
+\subsection{Manacher (Pal\'indromos en $O(n)$)}
+\textbf{Tiempo:} $O(n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Subcadena pal\'indroma m\'as larga, contar pal\'indromos, chequeo r\'apido de si $s[l..r]$ es pal\'indromo.
+
+\textit{Explicaci\'on:} Transforma $s$ insertando \texttt{\#} entre caracteres. Calcula $d[i]$ = radio del pal\'indromo centrado en $i$. Pal\'indromo impar: letra real. Par: \texttt{\#}. $d[i]$ es el n\'umero de caracteres reales a cada lado.
+
+\begin{lstlisting}
+// Added -- palindromos en O(n)
+vector<int> manacher(const string &s){
+    string t = "|";
+    for(char c : s){ t += c; t += '|'; }
+    int n = t.size();
+    vector<int> d(n);
+    for(int i = 0, l = 0, r = -1; i < n; i++){
+        int k = (i > r) ? 1 : min(d[l + r - i], r - i + 1);
+        while(i - k >= 0 && i + k < n && t[i - k] == t[i + k])
+            k++;
+        d[i] = k--;
+        if(i + k > r){ l = i - k; r = i + k; }
+    }
+    return d;
+}
+
+// Chequeo rapido O(1) de si s[l..r] es palindromo:
+// (requiere d del manacher)
+bool isPal(int l, int r, vector<int> &d){
+    int center = l + r + 1; // indice en t
+    return d[center] > r - l;
+}
+// --- USO ---
+// auto d = manacher(s);
+// int maxLen = *max_element(all(d)) - 1;
+// isPal(l, r, d) -> true si s[l..r] inclusive es palindromo.
+// d[2*i] = radio en '|' (palindromos pares).
+// d[2*i+1] = radio en caracter real (palindromos impares).
+\end{lstlisting}
+
+
+\end{multicols}
+\newpage
+
+\section{Programaci\'on Din\'amica}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- 0/1 Knapsack ----
+\subsection{Mochila 0/1 (Knapsack)}
+\textbf{Tiempo:} $O(n \cdot W)$ \quad \textbf{Espacio:} $O(W)$\\
+\textit{Cu\'ando usarla:} Seleccionar subconjunto de objetos maximizando valor sin exceder capacidad $W$.
+
+\textit{Explicación:} `dp[j]` = máximo valor con capacidad `j`. Se itera sobre objetos y se actualiza de atrás hacia adelante para no reusar el mismo objeto.
+
+\begin{lstlisting}
+// Added -- not in notebook
+int knapsack01(int n, int W, vector<int> &w, vector<int> &v){
+    // dp[j] = maximo valor con capacidad j
+    vector<int> dp(W+1, 0);
+    for(int i = 0; i < n; i++)
+        for(int j = W; j >= w[i]; j--)
+            dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+    return dp[W];
+}
+// CUIDADO: recorrer j de W a w[i] (no al reves)
+// para no usar el mismo item dos veces.
+// Para mochila ilimitada: j de w[i] a W.
+\end{lstlisting}
+
+% ---- LCS ----
+\subsection{Subsecuencia Com\'un M\'as Larga (LCS)}
+\textbf{Tiempo:} $O(n \cdot m)$ \quad \textbf{Espacio:} $O(n \cdot m)$ (o $O(m)$ sin reconstrucci\'on)\\
+\textit{Cu\'ando usarla:} Similitud entre dos secuencias. Diff de archivos.
+
+\begin{lstlisting}
+// Added -- not in notebook
+int lcs(const string &a, const string &b){
+    int n = a.size(), m = b.size();
+    // Optimizacion de espacio: solo 2 filas
+    vector<vector<int>> dp(2, vector<int>(m+1, 0));
+    for(int i = 1; i <= n; i++){
+        int cur = i & 1, prev = 1 - cur;
+        for(int j = 1; j <= m; j++){
+            if(a[i-1] == b[j-1])
+                dp[cur][j] = dp[prev][j-1] + 1;
+            else
+                dp[cur][j] = max(dp[prev][j], dp[cur][j-1]);
+        }
+    }
+    return dp[n & 1][m];
+}
+
+// Con reconstruccion (espacio O(n*m)):
+string lcs_str(const string &a, const string &b){
+    int n = a.size(), m = b.size();
+    vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+    for(int i = 1; i <= n; i++)
+        for(int j = 1; j <= m; j++){
+            if(a[i-1] == b[j-1]) dp[i][j] = dp[i-1][j-1]+1;
+            else dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+        }
+    string res;
+    int i = n, j = m;
+    while(i > 0 && j > 0){
+        if(a[i-1] == b[j-1]){ res += a[i-1]; i--; j--; }
+        else if(dp[i-1][j] > dp[i][j-1]) i--;
+        else j--;
+    }
+    reverse(all(res));
+    return res;
+}
+// --- USO ---
+// int len = lcs("abcde", "ace"); // len = 3 ("ace")
+// string sub = lcs_str("abcde", "ace"); // sub = "ace"
+// lcs() solo retorna el largo (espacio O(m)).
+// lcs_str() retorna la subsecuencia real (espacio O(n*m)).
+// Funciona con strings o vectores (cambiar tipo).
+\end{lstlisting}
+
+% ---- LIS ----
+\subsection{Subsecuencia Creciente M\'as Larga (LIS)}
+\textbf{Tiempo:} $O(n \log n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarla:} Encontrar la subsecuencia estrictamente creciente m\'as larga.
+
+\textit{Explicación:} Usa un vector \texttt{dp} que mantiene la menor cola posible para una longitud dada. Para cada \texttt{x}, busca la primera posición donde \texttt{x} puede reemplazar usando \texttt{lower\_bound} (para estrictamente creciente) o \texttt{upper\_bound} (para no decreciente). La reconstrucción guarda padres.
+
+\begin{lstlisting}
+// Added -- not in notebook
+int lis(vector<int> &a){
+    vector<int> dp;
+    for(int x : a){
+        auto it = lower_bound(all(dp), x);
+        if(it == dp.end()) dp.push_back(x);
+        else *it = x;
+    }
+    return dp.size();
+}
+// Para no-decreciente: usar upper_bound en vez de lower_bound
+// Para reconstruir la subsecuencia:
+vector<int> lis_reconstruct(vector<int> &a){
+    int n = a.size();
+    vector<int> dp, pos, parent_(n, -1);
+    vector<int> idx; // posiciones en dp
+    for(int i = 0; i < n; i++){
+        auto it = lower_bound(all(dp), a[i]);
+        int k = it - dp.begin();
+        if(it == dp.end()){
+            dp.push_back(a[i]);
+            idx.push_back(i);
+        } else {
+            *it = a[i];
+            idx[k] = i;
+        }
+        parent_[i] = (k > 0 ? idx[k-1] : -1);
+    }
+    vector<int> res;
+    int cur = idx[dp.size()-1];
+    while(cur != -1){
+        res.push_back(a[cur]);
+        cur = parent_[cur];
+    }
+    reverse(all(res));
+    return res;
+}
+// --- USO ---
+// vector<int> a = {3,1,4,1,5,9,2,6};
+// int len = lis(a);  // len = 4 (ej: {1,4,5,9})
+// auto seq = lis_reconstruct(a); // retorna la subsecuencia
+// lower_bound -> estrictamente creciente.
+// upper_bound -> no-decreciente (permite iguales).
+\end{lstlisting}
+
+% ---- Digit DP ----
+\subsection{Digit DP (Plantilla)}
+\textbf{Tiempo:} $O(D \times S \times 10)$ donde $D$ = d\'igitos, $S$ = estados \quad \textbf{Espacio:} $O(D \times S)$\\
+\textit{Cu\'ando usarla:} Contar n\'umeros en $[L, R]$ que cumplen cierta propiedad digit a digit.
+
+\textit{Explicación:} La función recursiva `solve(pos, sum, tight)` recorre los dígitos de izquierda a derecha. `tight` indica si el prefijo actual es igual al límite superior. La memoria (memo) se guarda por `pos`, `sum` (u otros estados) y `tight`.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Ejemplo: contar numeros en [1, N] cuya
+// suma de digitos = target
+string num;
+ll memo[20][200][2]; // [pos][sum][tight]
+
+ll solve(int pos, int sum, bool tight){
+    if(pos == (int)num.size())
+        return (sum == 0) ? 1 : 0; // ajustar condicion
+    if(memo[pos][sum][tight] != -1)
+        return memo[pos][sum][tight];
+    int limit = tight ? (num[pos] - '0') : 9;
+    ll res = 0;
+    for(int d = 0; d <= limit; d++){
+        res += solve(pos + 1, sum - d,
+                     tight && (d == limit));
+    }
+    return memo[pos][sum][tight] = res;
+}
+
+// Uso: contar en [1, N]
+// num = to_string(N);
+// memset(memo, -1, sizeof(memo));
+// ll ans = solve(0, target, true);
+//
+// Para [L, R]: f(R) - f(L-1)
+\end{lstlisting}
+
+\end{multicols}
+\newpage
+
+% ============================================================
+\section{Geometr\'ia}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- Point struct ----
+\subsection{Punto, Producto Cruz y Producto Punto}
+\textbf{Tiempo:} $O(1)$ por operaci\'on \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarlo:} Base de toda la geometr\'ia computacional.
+
+\begin{lstlisting}
+// Added -- not in notebook
+typedef long long T; // usar double si se necesita
+struct P {
+    T x, y;
+    P(T x=0, T y=0) : x(x), y(y) {}
+    P operator+(P p) const { return {x+p.x, y+p.y}; }
+    P operator-(P p) const { return {x-p.x, y-p.y}; }
+    P operator*(T t) const { return {x*t, y*t}; }
+    T dot(P p) const { return x*p.x + y*p.y; }
+    T cross(P p) const { return x*p.y - y*p.x; }
+    T norm2() const { return x*x + y*y; }
+    bool operator<(P p) const {
+        return tie(x,y) < tie(p.x, p.y);
+    }
+    bool operator==(P p) const {
+        return x == p.x && y == p.y;
+    }
+};
+
+// Orientacion de 3 puntos: >0 izq, <0 der, =0 colineal
+T orient(P a, P b, P c){
+    return (b-a).cross(c-a);
+}
+
+// Distancia al cuadrado entre dos puntos
+T dist2(P a, P b){
+    return (a-b).norm2();
+}
+\end{lstlisting}
+
+% ---- Convex Hull ----
+\subsection{Envolvente Convexa (Convex Hull --- Andrew's Monotone Chain)}
+\textbf{Tiempo:} $O(n \log n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarla:} Per\'imetro m\'inimo, di\'ametro de conjunto de puntos, eliminar puntos interiores.
+
+\begin{lstlisting}
+// Added -- not in notebook
+vector<P> convexHull(vector<P> pts){
+    int n = pts.size();
+    if(n < 2) return pts;
+    sort(all(pts));
+    vector<P> hull;
+    // Parte inferior
+    for(auto &p : pts){
+        while(hull.size() >= 2 &&
+              orient(hull[hull.size()-2],
+                     hull[hull.size()-1], p) <= 0)
+            hull.pop_back();
+        hull.push_back(p);
+    }
+    // Parte superior
+    int lower_size = hull.size() + 1;
+    for(int i = n-2; i >= 0; i--){
+        while((int)hull.size() >= lower_size &&
+              orient(hull[hull.size()-2],
+                     hull[hull.size()-1], pts[i]) <= 0)
+            hull.pop_back();
+        hull.push_back(pts[i]);
+    }
+    hull.pop_back(); // quitar ultimo duplicado
+    return hull;
+}
+
+// Area del poligono (con signo, dividir entre 2)
+T areaPoligono2(vector<P> &poly){
+    T area = 0;
+    int n = poly.size();
+    for(int i = 0; i < n; i++)
+        area += poly[i].cross(poly[(i+1) % n]);
+    return area; // area real = abs(area) / 2
+}
+// --- USO ---
+// vector<P> pts = {{0,0},{1,0},{1,1},{0,1},{0.5,0.5}};
+// auto hull = convexHull(pts); // vertices del hull en orden
+// T a2 = areaPoligono2(hull);  // area * 2 (con signo)
+// double area = abs(a2) / 2.0; // area real
+// orient(a,b,c): >0 si c esta a la izquierda de a->b,
+//   <0 derecha, =0 colineal. Base de casi toda geometria.
+// dist2(a,b): distancia al cuadrado (evita sqrt).
+\end{lstlisting}
+
+% ---- Line Intersection ----
+\subsection{Intersecci\'on de L\'ineas}
+\textbf{Tiempo:} $O(1)$ \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarla:} Encontrar punto de cruce de dos l\'ineas/segmentos.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Linea definida por dos puntos: P a, P b
+// Retorna {true, punto} si se intersectan,
+// {false, {0,0}} si son paralelas.
+// Usa double para precision
+struct Pd {
+    double x, y;
+    Pd(double x=0, double y=0) : x(x), y(y) {}
+    Pd operator+(Pd p){ return {x+p.x, y+p.y}; }
+    Pd operator-(Pd p){ return {x-p.x, y-p.y}; }
+    Pd operator*(double t){ return {x*t, y*t}; }
+    double cross(Pd p){ return x*p.y - y*p.x; }
+};
+
+pair<bool, Pd> lineIntersection(Pd a, Pd b, Pd c, Pd d){
+    Pd ab = b - a, cd = d - c, ac = c - a;
+    double denom = ab.cross(cd);
+    if(abs(denom) < 1e-9) return {false, {0,0}};
+    double t = ac.cross(cd) / denom;
+    return {true, a + ab * t};
+}
+
+// Para segmentos: verificar que t in [0,1] y
+// u = ac.cross(ab) / denom tambien in [0,1]
+bool segmentIntersect(Pd a, Pd b, Pd c, Pd d){
+    Pd ab = b-a, cd = d-c, ac = c-a;
+    double denom = ab.cross(cd);
+    if(abs(denom) < 1e-9) return false; // paralelas
+    double t = ac.cross(cd) / denom;
+    double u = ac.cross(ab) / denom;
+    return t >= -1e-9 && t <= 1+1e-9
+        && u >= -1e-9 && u <= 1+1e-9;
+}
+\end{lstlisting}
+
+\end{multicols}
+\newpage
+
+% ============================================================
+\section{T\'ecnicas de B\'usqueda}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- Binary Search on Answer ----
+\subsection{B\'usqueda Binaria sobre la Respuesta}
+\textbf{Tiempo:} $O(\log(\text{rango}) \times f(n))$ \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarla:} ``Encontrar el m\'inimo/m\'aximo valor tal que se cumple cierta condici\'on mon\'otona.''
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Plantilla: encontrar el minimo x en [lo, hi]
+// tal que check(x) es true.
+// check debe ser monotona: F F F ... T T T
+ll binarySearchAnswer(ll lo, ll hi){
+    while(lo < hi){
+        ll mid = lo + (hi - lo) / 2;
+        if(check(mid)) hi = mid;
+        else lo = mid + 1;
+    }
+    return lo;
+}
+
+// Para reales (ej. distancia minima):
+double bsReal(double lo, double hi){
+    for(int iter = 0; iter < 100; iter++){
+        double mid = (lo + hi) / 2;
+        if(check(mid)) hi = mid;
+        else lo = mid;
+    }
+    return lo;
+}
+\end{lstlisting}
+
+% ---- Two Pointers ----
+\subsection{Dos Punteros (Two Pointers)}
+\textbf{Tiempo:} $O(n)$ \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarla:} Arreglo ordenado, pares con cierta suma, subarreglos con propiedad mon\'otona.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Ejemplo: encontrar par con suma = target en arreglo ordenado
+pair<int,int> twoSum(vector<int> &a, int target){
+    int l = 0, r = (int)a.size() - 1;
+    while(l < r){
+        int s = a[l] + a[r];
+        if(s == target) return {l, r};
+        if(s < target) l++;
+        else r--;
+    }
+    return {-1, -1};
+}
+\end{lstlisting}
+
+% ---- Sliding Window ----
+\subsection{Ventana Deslizante (Sliding Window)}
+\textbf{Tiempo:} $O(n)$ \quad \textbf{Espacio:} $O(k)$ o $O(1)$\\
+\textit{Cu\'ando usarla:} Subarreglos de tama\~no fijo o variable con restricciones sobre elementos.
+
+\textit{Aplicado en:} \textbf{Subarray Distinct Values (CSES)} --- Contar subarreglos con a lo m\'as $k$ valores distintos usando ventana deslizante con mapa de frecuencias.
+
+\begin{lstlisting}
+// Del notebook: practica-cpc/subarray-distinct-values.cpp
+void solve(){
+    int n, k; cin >> n >> k;
+    int l = 0;
+    map<int,int> freq;
+    ll count = 0;
+    vector<int> a(n);
+    for(int &x : a) cin >> x;
+    for(int r = 0; r < n; r++){
+        freq[a[r]]++;
+        while((int)freq.size() > k){
+            freq[a[l]]--;
+            if(freq[a[l]] == 0) freq.erase(a[l]);
+            l++;
+        }
+        count += (r - l + 1);
+    }
+    cout << count;
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+// Plantilla generica de ventana deslizante
+// Added -- not in notebook
+// Ventana de tamanio fijo k:
+// mantener estado al agregar a[r] y quitar a[r-k]
+// Ventana variable (maximo tamanio cumpliendo condicion):
+int l = 0;
+for(int r = 0; r < n; r++){
+    // agregar a[r] al estado
+    while(/* estado invalido */){
+        // quitar a[l] del estado
+        l++;
+    }
+    // procesar ventana [l, r]
+    // ej: ans = max(ans, r - l + 1);
+}
+\end{lstlisting}
+
+
+% ---- Monotonic Stack ----
+\subsection{Stack Monot\'onico (NGE/NSE/PGE/PSE)}
+\textbf{Tiempo:} $O(n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Para cada elemento $a_i$, encontrar el siguiente/anterior elemento mayor/menor. Nomenclatura: NGE (Next Greater), NSE (Next Smaller), PGE (Previous Greater), PSE (Previous Smaller).
+
+\textit{Explicaci\'on:} Recorre el arreglo manteniendo un stack con elementos en orden creciente o decreciente seg\'un se busque mayor o menor. Cuando un nuevo elemento rompe la monoton\'ia, el tope del stack encuentra su respuesta.
+
+\begin{lstlisting}
+// Added
+// NGE[i] = indice del sig. elemento > a[i] (o n si no hay)
+vector<int> nextGreater(vi &a){
+    int n = a.size();
+    vi res(n, n); stack<int> st;
+    for(int i = 0; i < n; i++){
+        while(!st.empty() && a[st.top()] < a[i]){
+            res[st.top()] = i; st.pop();
+        }
+        st.push(i);
+    }
+    return res;
+}
+
+// PGE[i] = indice del ant. elemento > a[i] (o -1)
+vector<int> prevGreater(vi &a){
+    int n = a.size();
+    vi res(n, -1); stack<int> st;
+    for(int i = 0; i < n; i++){
+        while(!st.empty() && a[st.top()] <= a[i]) st.pop();
+        if(!st.empty()) res[i] = st.top();
+        st.push(i);
+    }
+    return res;
+}
+// --- USO ---
+// Para NSE: cambiar '<' por '>' en nextGreater -> nextSmaller
+// Para PSE: cambiar '<=' por '>=' en prevGreater -> prevSmaller
+// Aplicaciones: area maxima en histograma, contribucion de
+//   cada elemento como max/min en subarreglos, siguiente mayor.
+// Area max en histograma: para cada i, area = a[i]*(NSE[i]-PSE[i]-1)
+\end{lstlisting}
+
+% ---- Mo's Algorithm ----
+\subsection{Mo's Algorithm}
+\textbf{Tiempo:} $O((n+q)\sqrt{n})$ \quad \textbf{Espacio:} $O(n + q)$\\
+\textit{Cu\'ando usarlo:} Consultas en rango $[l, r]$ sin actualizaciones. $n, q \leq 10^5$. No sirve si hay updates.
+
+\textit{Explicaci\'on:} Ordena las consultas por bloque de $l$: $l/B$ ascendente, y dentro del mismo bloque, $r$ ascendente (o alternado para optimizar). Mantiene punteros $L, R$ que se expanden/contraen al mover entre consultas.
+
+\begin{lstlisting}
+// Added
+int BLOCK;
+
+struct Query { int l, r, idx; };
+
+vector<ll> moAlgorithm(vi &a, vector<Query> &qs){
+    int n = a.size(), q = qs.size();
+    BLOCK = max(1, (int)(n / sqrt(q)));
+    sort(all(qs), [&](Query &x, Query &y){
+        int bx = x.l / BLOCK, by = y.l / BLOCK;
+        if(bx != by) return bx < by;
+        return (bx & 1) ? x.r > y.r : x.r < y.r;
+    });
+    vector<ll> ans(q);
+    int L = 0, R = -1;
+    ll cur = 0;
+    auto add = [&](int pos){ /* cur += a[pos]; */ };
+    auto remove = [&](int pos){ /* cur -= a[pos]; */ };
+    for(auto &qr : qs){
+        while(L > qr.l) add(--L);
+        while(R < qr.r) add(++R);
+        while(L < qr.l) remove(L++);
+        while(R > qr.r) remove(R--);
+        ans[qr.idx] = cur;
+    }
+    return ans;
+}
+// --- USO ---
+// vector<Query> qs; // l, r inclusive 0-based
+// auto ans = moAlgorithm(a, qs);
+// BLOCK = n/sqrt(q) es buena eleccion.
+// Optimizacion: ordenar r alternado (odd-even sort).
+// Implementar add() y remove() segun el problema.
+\end{lstlisting}
+
+
+\end{multicols}
+\newpage
+
+\section{Miscel\'anea}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- Warnsdorff (Knight's Tour) ----
+\subsection{Recorrido del Caballo (Warnsdorff)}
+\textbf{Tiempo:} $O(n^2)$ heur\'istico \quad \textbf{Espacio:} $O(n^2)$\\
+\textit{Cu\'ando usarlo:} Knight's tour en tablero $n \times n$. Funciona bien para $n \geq 5$.
+
+\begin{lstlisting}
+// Del notebook: clasicos/off-topic/king-tour.cpp
+int dx[] = {-2,-2,2,2,1,-1,1,-1};
+int dy[] = {1,-1,1,-1,2,2,-2,-2};
+
+bool isValid(int x, int y, vector<vector<int>> &tab){
+    int n = tab.size();
+    return x>=0 && x<n && y>=0 && y<n && tab[x][y]==-1;
+}
+
+int countMoves(int x, int y, vector<vector<int>> &tab){
+    int c = 0;
+    for(int k = 0; k < 8; k++)
+        if(isValid(x+dx[k], y+dy[k], tab)) c++;
+    return c;
+}
+// Heuristica de Warnsdorff: elegir la casilla
+// con menor numero de movimientos disponibles.
+\end{lstlisting}
+
+% ---- Tabla de bits utiles ----
+\subsection{Operaciones de Bits \'Utiles}
+\textbf{Tiempo:} $O(1)$ \quad \textbf{Espacio:} $O(1)$\\
+\textit{Cu\'ando usarlas:} M\'ascaras de bits, subconjuntos, potencias de 2.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Verificar si n es potencia de 2
+bool isPow2(int n){ return n > 0 && (n & (n-1)) == 0; }
+// Bit mas significativo
+int msb(int n){ return 31 - __builtin_clz(n); }
+// Contar bits encendidos
+int popcount(int n){ return __builtin_popcount(n); }
+// Para long long: __builtin_popcountll(n)
+// Iterar sobre subconjuntos de una mascara m:
+// for(int s = m; s > 0; s = (s-1) & m) { ... }
+// Iterar sobre todos los subconjuntos de tamanio k de n bits:
+// int s = (1<<k) - 1;
+// while(s < (1<<n)){
+//     // procesar s
+//     int c = s & (-s), r = s + c;
+//     s = (((r ^ s) >> 2) / c) | r;
+// }
+\end{lstlisting}
+
+% ---- Policy-based trees ----
+\subsection{Ordered Set (pb\_ds)}
+\textbf{Tiempo:} $O(\log n)$ por operaci\'on \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Set con acceso por \'indice (k-\'esimo elemento) y order\_of\_key.
+
+\begin{lstlisting}
+// Added -- not in notebook
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+typedef tree<int, null_type, less<int>,
+    rb_tree_tag, tree_order_statistics_node_update>
+    ordered_set;
+
+// ordered_set os;
+// os.insert(x);
+// os.find_by_order(k); // iterador al k-esimo (0-based)
+// os.order_of_key(x);  // cuantos elementos < x
+// Para multiset: usar pair<int,int> con (valor, id_unico)
+\end{lstlisting}
+
+% ---- Tabla de trucos STL ----
+\subsection{Trucos STL Frecuentes}
+\begin{lstlisting}
+// Added -- not in notebook
+// Eliminar duplicados de vector ordenado:
+sort(all(v));
+v.erase(unique(all(v)), v.end());
+
+// Rotar vector (shift izquierdo por k):
+rotate(v.begin(), v.begin()+k, v.end());
+
+// Acumular:
+ll sum = accumulate(all(v), 0LL);
+
+// Partial sums (prefix sums):
+vector<ll> ps(n+1, 0);
+for(int i = 0; i < n; i++) ps[i+1] = ps[i] + a[i];
+// Suma [l, r] = ps[r+1] - ps[l]
+
+// lower_bound / upper_bound en set:
+auto it = s.lower_bound(x); // >= x
+auto it2 = s.upper_bound(x); // > x
+
+// max_element / min_element:
+int mx = *max_element(all(v));
+\end{lstlisting}
+
+% ---- Sumas de prefijo 2D ----
+\subsection{Sumas de Prefijo 2D}
+\textbf{Tiempo:} Preproceso $O(nm)$, consulta $O(1)$ \quad \textbf{Espacio:} $O(nm)$\\
+\textit{Cu\'ando usarla:} Suma en sub-rect\'angulo de una matriz.
+
+\begin{lstlisting}
+// Added -- not in notebook
+// Dado int a[N][M]
+// Construir:
+ll ps[N+1][M+1]; // todo inicializado a 0
+for(int i = 1; i <= n; i++)
+    for(int j = 1; j <= m; j++)
+        ps[i][j] = a[i-1][j-1] + ps[i-1][j]
+                    + ps[i][j-1] - ps[i-1][j-1];
+
+// Consulta suma en rectangulo (r1,c1) a (r2,c2) 1-based:
+ll query2D(int r1, int c1, int r2, int c2){
+    return ps[r2][c2] - ps[r1-1][c2]
+         - ps[r2][c1-1] + ps[r1-1][c1-1];
+}
+\end{lstlisting}
+
+\end{multicols}
+\newpage
+
+% ============================================================
+
+% ============================================================
+\section{\'Algebra Lineal}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- Gaussian Elimination ----
+\subsection{Eliminaci\'on Gaussiana (m\'odulo)}
+\textbf{Tiempo:} $O(n^3)$ \quad \textbf{Espacio:} $O(n^2)$\\
+\textit{Cu\'ando usarlo:} Resolver sistema lineal $Ax = b \pmod m$ con $m$ primo. Rango de matriz, determinante, inversa.
+
+\textit{Explicaci\'on:} Escalonamiento fila por fila. Para cada columna, busca pivote no nulo. Si no hay, contin\'ua (rango < n). Luego sustituci\'on hacia atr\'as.
+
+\begin{lstlisting}
+// Added -- modulo primo
+ll mod = 1e9 + 7;
+
+ll gauss(vector<vector<ll>> a, vector<ll> &b, vector<ll> &x){
+    int n = a.size();
+    for(int col = 0, row = 0; col < n && row < n; col++){
+        int sel = row;
+        for(int i = row; i < n; i++)
+            if(abs(a[i][col]) > abs(a[sel][col])) sel = i;
+        if(a[sel][col] == 0) continue;
+        swap(a[sel], a[row]); swap(b[sel], b[row]);
+        ll inv = modinv(a[row][col], mod);
+        for(int j = col; j < n; j++)
+            a[row][j] = a[row][j] * inv % mod;
+        b[row] = b[row] * inv % mod;
+        for(int i = 0; i < n; i++){
+            if(i == row) continue;
+            ll f = a[i][col];
+            if(f == 0) continue;
+            for(int j = col; j < n; j++)
+                a[i][j] = (a[i][j] - f * a[row][j]) % mod;
+            b[i] = (b[i] - f * b[row]) % mod;
+        }
+        row++;
+    }
+    x.assign(n, 0);
+    for(int i = 0; i < n; i++)
+        x[i] = (b[i] + mod) % mod;
+    return 0; // 0 = sol unica (con mod)
+}
+// --- USO ---
+// a = matriz n x n, b = terminos independientes.
+// Requiere modinv definido (inverso modular).
+// Si el sistema es singular (inf o 0 soluciones), chequear.
+// Para doubles: quitar modulo, usar abs(a[i][col])>eps.
+\end{lstlisting}
+
+% ---- Matrix Exponentiation ----
+\subsection{Exponenciaci\'on de Matrices}
+\textbf{Tiempo:} $O(k^3 \log n)$ \quad \textbf{Espacio:} $O(k^2)$\\
+\textit{Cu\'ando usarlo:} Recurrencias lineales ($n \leq 10^{18}$), conteo de caminos en grafos, Fibonacci r\'apido.
+
+\textit{Explicaci\'on:} Escribe la recurrencia como multiplicaci\'on matriz $\times$ vector. Eleva la matriz a $n$ con exponenciaci\'on binaria.
+
+\begin{lstlisting}
+// Added -- multiplicacion modulo
+using Mat = vector<vector<ll>>;
+
+Mat matMul(const Mat &A, const Mat &B, ll mod){
+    int n = A.size(), m = B[0].size(), p = A[0].size();
+    Mat C(n, vector<ll>(m, 0));
+    for(int i = 0; i < n; i++)
+        for(int k = 0; k < p; k++)
+            if(A[i][k])
+                for(int j = 0; j < m; j++)
+                    C[i][j] = (C[i][j] + A[i][k] * B[k][j]) % mod;
+    return C;
+}
+
+Mat matPow(Mat A, ll e, ll mod){
+    int n = A.size();
+    Mat res(n, vector<ll>(n, 0));
+    for(int i = 0; i < n; i++) res[i][i] = 1;
+    while(e){
+        if(e & 1) res = matMul(res, A, mod);
+        A = matMul(A, A, mod);
+        e >>= 1;
+    }
+    return res;
+}
+// --- USO ---
+// Fibonacci: [[F_{n+1}],[F_n]] = [[1,1],[1,0]]^n * [[F_1],[F_0]]
+// Mat fib = {{1,1},{1,0}};
+// Mat res = matPow(fib, n, MOD);
+// F_n = res[0][1] (si F_0=0, F_1=1)
+\end{lstlisting}
+
+
+% ---- FFT ----
+\subsection{FFT (Fast Fourier Transform)}
+\textbf{Tiempo:} $O(n \log n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Multiplicar polinomios con coeficientes reales. Convoluci\'on. $n+m \leq 10^6$. Para enteros exactos usar NTT.
+
+\textit{Explicaci\'on:} Eval\'ua dos polinomios en ra\'ices de la unidad, multiplica punto a punto, interpola inversa. El resultado es la convoluci\'on. Redondear a entero si los coeficientes son enteros.
+
+\begin{lstlisting}
+// Added
+using cd = complex<double>;
+const double PI = acos(-1);
+
+void fft(vector<cd> &a, bool invert){
+    int n = a.size();
+    for(int i = 1, j = 0; i < n; i++){
+        int bit = n >> 1;
+        for(; j & bit; bit >>= 1) j ^= bit;
+        j ^= bit;
+        if(i < j) swap(a[i], a[j]);
+    }
+    for(int len = 2; len <= n; len <<= 1){
+        double ang = 2 * PI / len * (invert ? -1 : 1);
+        cd wlen(cos(ang), sin(ang));
+        for(int i = 0; i < n; i += len){
+            cd w(1);
+            for(int j = 0; j < len/2; j++){
+                cd u = a[i+j], v = a[i+j+len/2] * w;
+                a[i+j] = u + v;
+                a[i+j+len/2] = u - v;
+                w *= wlen;
+            }
+        }
+    }
+    if(invert) for(cd &x : a) x /= n;
+}
+
+vector<ll> multiply(vector<ll> &a, vector<ll> &b){
+    vector<cd> fa(all(a)), fb(all(b));
+    int n = 1;
+    while(n < sz(a) + sz(b)) n <<= 1;
+    fa.resize(n); fb.resize(n);
+    fft(fa, false); fft(fb, false);
+    for(int i = 0; i < n; i++) fa[i] *= fb[i];
+    fft(fa, true);
+    vector<ll> res(n);
+    for(int i = 0; i < n; i++) res[i] = round(fa[i].real());
+    return res;
+}
+// --- USO ---
+// auto c = multiply(a, b); // c[k] = sum_{i+j=k} a[i]*b[j]
+// Redondear con round(). Complejidad: O(n log n), n = potencia de 2.
+\end{lstlisting}
+
+% ---- NTT ----
+\subsection{NTT (Number Theoretic Transform)}
+\textbf{Tiempo:} $O(n \log n)$ \quad \textbf{Espacio:} $O(n)$\\
+\textit{Cu\'ando usarlo:} Convoluci\'on con coeficientes enteros m\'odulo $p$. Preferido sobre FFT en ICPC: sin errores de redondeo.
+
+\textit{Explicaci\'on:} Misma estructura que FFT pero con ra\'ices de la unidad en $\mathbb{Z}_p$. Requiere $p = c\cdot2^k+1$ primo. MOD $=998244353$ ($119\cdot2^{23}+1$) soporta $n \leq 2^{23}$.
+
+\begin{lstlisting}
+// Added
+const ll MOD_NTT = 998244353; // 119*2^23+1, raiz=3
+const ll ROOT = 3;
+
+ll ntt_pow(ll a, ll d, ll m){
+    ll res = 1;
+    while(d){
+        if(d & 1) res = res * a % m;
+        a = a * a % m; d >>= 1;
+    }
+    return res;
+}
+
+void ntt(vector<ll> &a, bool invert){
+    int n = a.size();
+    for(int i = 1, j = 0; i < n; i++){
+        int bit = n >> 1;
+        for(; j & bit; bit >>= 1) j ^= bit;
+        j ^= bit;
+        if(i < j) swap(a[i], a[j]);
+    }
+    for(int len = 2; len <= n; len <<= 1){
+        ll wlen = ntt_pow(ROOT, (MOD_NTT-1)/len, MOD_NTT);
+        if(invert) wlen = ntt_pow(wlen, MOD_NTT-2, MOD_NTT);
+        for(int i = 0; i < n; i += len){
+            ll w = 1;
+            for(int j = 0; j < len/2; j++){
+                ll u = a[i+j], v = a[i+j+len/2] * w % MOD_NTT;
+                a[i+j] = (u + v) % MOD_NTT;
+                a[i+j+len/2] = (u - v + MOD_NTT) % MOD_NTT;
+                w = w * wlen % MOD_NTT;
+            }
+        }
+    }
+    if(invert){
+        ll inv_n = ntt_pow(n, MOD_NTT-2, MOD_NTT);
+        for(ll &x : a) x = x * inv_n % MOD_NTT;
+    }
+}
+
+vector<ll> multiplyNTT(vector<ll> a, vector<ll> b){
+    int n = 1;
+    while(n < sz(a) + sz(b)) n <<= 1;
+    a.resize(n); b.resize(n);
+    ntt(a, false); ntt(b, false);
+    for(int i = 0; i < n; i++) a[i] = a[i] * b[i] % MOD_NTT;
+    ntt(a, true);
+    return a;
+}
+// --- USO ---
+// auto c = multiplyNTT(a, b); // c[k] = sum a[i]*b[j] mod MOD
+// MOD=998244353 soporta n<=2^23. O(n log n).
+// Para otro primo p: usar raiz primitiva de p con orden >= n.
+\end{lstlisting}
+
+
+\end{multicols}
+\newpage
+
+\section{Scripts Útiles (Compilar y Probar)}
+% ============================================================
+\begin{multicols}{2}
+
+% ---- Compilación Estándar ----
+\subsection{Compilación Estándar (C++17)}
+\textbf{Cuándo usarlo:} Para compilar la solución asegurando el uso del estándar C++17 y activando advertencias de código comunes. Útil para verificar la sintaxis antes de ejecutar el código contra un caso de prueba.
+
+\begin{lstlisting}[language=bash]
+# Compilar archivo sol.cpp y generar el ejecutable sol.exe (Windows) o sol (Linux/Mac)
+g++ -std=c++17 -O2 -Wall -Wextra -o sol sol.cpp
+\end{lstlisting}
+
+% ---- Compilación y Ejecución con Archivo ----
+\subsection{Compilación y Ejecución Directa (CMD/Bash)}
+\textbf{Cuándo usarlo:} Para automatizar la prueba de la solución, redirigiendo un archivo de texto con las entradas directamente al programa. *Nota:* Requiere usar el Command Prompt en Windows o Bash en Linux/Mac; no funciona con PowerShell.
+
+\begin{lstlisting}[language=bash]
+# Compila y, si es exitoso, ejecuta pasando entrada.txt, es forzoso tener un freopen("archivo.txt", "r", stdin)
+g++ -std=c++17 -O2 -Wall -Wextra -o sol sol.cpp ; .\sol.exe
+\end{lstlisting}
+
+% ---- Truco para Redirigir desde el Código ----
+\subsection{Redirección de I/O desde el Código}
+\textbf{Cuándo usarlo:} Cuando se trabaja en entornos donde redireccionar desde la terminal es complicado (como PowerShell) o para no tener que teclear el comando largo cada vez que se prueba.
+\textit{Importante:} Comentar o eliminar esta línea antes de enviar el código al juez en línea (a menos que el problema explícitamente pida leer de archivo).
+
+\begin{lstlisting}
+int main(){
+    fast;
+    // Agrega esto temporalmente para leer desde "entrada.txt"
+    freopen("entrada.txt", "r", stdin); 
+    
+    int t = 1;
+    // cin >> t;
+    while(t--) solve();
+    return 0;
+}
+\end{lstlisting}
+
+\end{multicols}
+
+% ============================================================
+\section{Patrones R\'apidos}
+% ============================================================
+
+Tabla de referencia r\'apida: dado el tipo de problema, qu\'e algoritmo aplicar.
+
+\vspace{4pt}
+
+\begin{center}
+\small
+\begin{longtable}{|p{6.5cm}|p{6.5cm}|p{3cm}|}
+\hline
+\textbf{Se\~nal del problema} & \textbf{Algoritmo / T\'ecnica} & \textbf{Complejidad} \\
+\hline\hline
+\endfirsthead
+\hline
+\textbf{Se\~nal del problema} & \textbf{Algoritmo / T\'ecnica} & \textbf{Complejidad} \\
+\hline\hline
+\endhead
+
+Camino m\'as corto, sin peso & BFS & $O(V+E)$ \\
+\hline
+Camino m\'as corto, pesos $\geq 0$ & Dijkstra & $O((V+E)\log V)$ \\
+\hline
+Camino m\'as corto, pesos negativos & Bellman-Ford & $O(VE)$ \\
+\hline
+Camino m\'as corto, pesos 0 \'o 1 & 0-1 BFS & $O(V+E)$ \\
+\hline
+Distancias entre todos los pares, $V \leq 500$ & Floyd-Warshall & $O(V^3)$ \\
+\hline
+\'Arbol de expansi\'on m\'inima & Kruskal (con DSU) o Prim & $O(E \log E)$ \\
+\hline
+Ordenar tareas con dependencias & Toposort (Kahn / DFS) & $O(V+E)$ \\
+\hline
+Componentes fuertemente conexas & Kosaraju / Tarjan & $O(V+E)$ \\
+\hline
+Puentes / puntos de articulaci\'on & DFS con tin/low & $O(V+E)$ \\
+\hline
+Ancestro com\'un en \'arbol & LCA (binary lifting) & $O(\log n)$ consulta \\
+\hline
+Componentes conexas din\'amicas & DSU / Union-Find & $O(\alpha(n))$ \\
+\hline
+Consulta m\'in/m\'ax en rango est\'atico & Sparse Table & $O(1)$ consulta \\
+\hline
+Suma de rango con actualizaci\'on puntual & BIT / Fenwick Tree & $O(\log n)$ \\
+\hline
+Rango con actualizaci\'on de rango & Segment Tree + Lazy & $O(\log n)$ \\
+\hline
+Siguiente/anterior mayor/menor & Stack monot\'onico (NGE/NSE/PGE/PSE) & $O(n)$ \\
+\hline
+\'Area m\'axima en histograma & PSE + NSE + contribuci\'on & $O(n)$ \\
+\hline
+Suma de (max$-$min) de todos los subarreglos & Contribuci\'on con NGE/PGE/NSE/PSE & $O(n)$ \\
+\hline
+B\'usqueda de patr\'on en texto & KMP / Z-algorithm & $O(n+m)$ \\
+\hline
+Comparar subcadenas en $O(1)$ & Hashing polinomial & $O(n)$ preproceso \\
+\hline
+Subcadena com\'un m\'as larga & Suffix Array + LCP & $O(n \log^2 n)$ \\
+\hline
+Prefijos de un diccionario & Trie & $O(|s|)$ \\
+\hline
+Todos los primos hasta $n$ & Criba de Erat\'ostenes & $O(n \log \log n)$ \\
+\hline
+$a^b \mod m$ & Exponenciaci\'on binaria & $O(\log b)$ \\
+\hline
+Dividir bajo m\'odulo & Inverso modular (Fermat/ExtGCD) & $O(\log m)$ \\
+\hline
+$\binom{n}{r} \mod p$ & Factorial + inverso precalculado & $O(1)$ consulta \\
+\hline
+Sistema de congruencias & Teorema Chino del Resto & $O(n \log M)$ \\
+\hline
+Mochila (subconjunto \'optimo) & DP Knapsack 0/1 & $O(nW)$ \\
+\hline
+Subsecuencia com\'un m\'as larga & DP LCS & $O(nm)$ \\
+\hline
+Subsecuencia creciente m\'as larga & LIS con b\'usqueda binaria & $O(n \log n)$ \\
+\hline
+Contar n\'umeros con propiedad en $[L,R]$ & Digit DP & $O(D \times S \times 10)$ \\
+\hline
+M\'inimo/m\'aximo valor que cumple condici\'on & B\'usqueda binaria sobre la respuesta & $O(\log R \times f)$ \\
+\hline
+Subarreglos con $\leq k$ distintos & Ventana deslizante + mapa & $O(n)$ \\
+\hline
+Par con suma $= t$ en arreglo ordenado & Dos punteros & $O(n)$ \\
+\hline
+Per\'imetro m\'inimo / puntos extremos & Convex Hull & $O(n \log n)$ \\
+\hline
+Intersecci\'on de l\'ineas & Producto cruz + par\'ametro $t$ & $O(1)$ \\
+\hline
+K-\'esimo elemento / rango & Ordered set (pb\_ds) & $O(\log n)$ \\
+\hline
+Fuerza bruta sobre permutaciones ($n \leq 10$) & \texttt{next\_permutation} & $O(n!)$ \\
+\hline
+Overflow en multiplicaci\'on & \texttt{\_\_int128} o \texttt{mulmod} & $O(1)$ \\
+\hline
+\end{longtable}
+\end{center}
+
+\end{document}
