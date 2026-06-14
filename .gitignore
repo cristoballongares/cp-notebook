@@ -15,8 +15,7 @@ __pycache__/
 
 # Competitive Programming Helper metadata
 # .cph/ 
-.codewhale/
-.gitignore
+*.codewhale/
 
 # Temporary files
 scratch/
@@ -28,3 +27,5 @@ test.txt
 # Python environment
 venv/
 .env
+
+.gitignore
