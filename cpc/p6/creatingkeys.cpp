@@ -1,0 +1,123 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// tipos
+using ll  = long long;
+using pii = pair<int,int>;
+using pll = pair<ll,ll>;
+using vi  = vector<int>;
+using vll = vector<ll>;
+
+// fast io
+#define fast ios::sync_with_stdio(false); cin.tie(nullptr)
+
+// loops
+#define forr(i,a,b) for(int i=(a);i<(b);i++)
+#define FOR(i,a,b) for(int i=(a);i<=(b);i++)
+#define rof(i,a,b) for(int i=(a);i>=(b);i--)
+
+// utileria
+#define all(x) (x).begin(),(x).end()
+#define sz(x) (int)(x).size()
+#define pb push_back
+#define fi first
+#define se second
+
+// mates
+#define MOD 1000000007LL
+#define INF 1e18
+
+// debugging
+
+#ifdef LOCAL
+    #define dbg(x) cerr << #x << " = " << x << "\n"
+    #define dbgv(v) cerr << #v << " = "; for(auto x : v) cerr << x << " "; cerr << "\n"
+    #define dbgm(m) cerr << #m << ":\n"; for(auto row : m){ for(auto x : row) cerr << x << " "; cerr << "\n";}
+#else
+    #define dbg(x)
+    #define dbgv(v)
+    #define dbgm(m)
+#endif
+
+// -------------------------------------------
+
+void solve(){
+   
+    int n,x; cin >> n >> x;
+
+    if( x == 1){
+      
+      for(int i = 0 ; i < (n - 1); i++) cout<<0<<' ';
+      cout<<1;
+
+      return ;
+    
+    } else if( n == 1){
+      
+      cout<<x; return ;
+
+    }
+
+    int firstZero = __builtin_ctz(~x);
+
+    int mex = ( 1 << firstZero);
+
+    int m = min(mex, n);
+    vi a;
+  
+    int mask = 0;
+    
+    for(int i = 0 ; i < m ; i++){
+
+        mask|=i;
+        a.pb(i);
+
+    }
+
+    int i;
+
+    int msk = 0;
+
+    if( mask != x && n == m) {
+
+      for(int i = 0 ; i < m - 1 ; i++){
+        
+        msk|=i;
+        cout<< i <<' ';
+
+      }
+      msk|=x;
+      cout<<x;
+        
+    } else {
+
+      for(int i = 0;i < m ; i++){
+        
+        msk|=i;
+        cout<<i<<' ';
+      
+      }
+      
+      msk|=x;
+
+      for(int i = m ; i < n ; i++) cout<<x<<' ';
+
+    }
+
+
+}
+
+int main(){
+    fast;
+    
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout); // Descomenta esta linea si queremos que la salida vaya a un archivo
+#endif
+    
+    int t=1; 
+    cin>>t;
+    while(t--){solve();cout<<'\n';}
+
+    return 0;
+}
