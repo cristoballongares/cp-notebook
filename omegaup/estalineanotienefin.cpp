@@ -41,39 +41,64 @@ using vll = vector<ll>;
 
 // -------------------------------------------
 
+int op(int a, int b, char o){
+
+  switch(o){
+    case '+': return a+b;
+    case '-': return a-b;
+    case '*': return a*b;
+    case '/': return a/b;
+  }
+  return 0;
+
+}
+
 void solve(){
 
-    int n,m; cin>>n>>m;
-    unordered_map<string,string> um, um2;
+  int t; cin>>t;
+  if( t & 1){
+    cout<<"Pistas invalidas"; return ;
+  }
 
-    int i;
+  int l=-1,r=1e9+6;
 
-    forr(i,0,n){
-        string a,b; cin>>a>>b;
-        um[a] = b;
-        um2[b] = a;
-    }
+  t/=2;
 
-    while(m--){
+  int l1,r1;
 
-        string a,b; cin>>a>>b;
-        string x = b;
-        b.pop_back();
-        if(um2.count(b)){
+  while(t--){
 
-            cout<<a<<' '<<x<<' '<<"#"<<um2[b]<<'\n';
+    int a,b;
+    char x; 
+    cin>>a>>x>>b;
 
-        }
+    int c,d;
+    char y;
+    cin>>c>>y>>d;
 
-    }
+    l1 = op(a,b,x);
+    r1 = op(c,d,y);
+
+  
+
+    if(l1 >= l && l1 <= r) l = l1;
+    if( r1 <= r && r1 >= l ) r = r1;
+
+  }
+
+  cout<<l;
 
 }
 
 int main(){
     fast;
     
-    int t=1; 
-    // cin>>t;
+#ifndef ONLINE_JUDGE
+   // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout); // Descomenta esta linea si queremos que la salida vaya a un archivo
+#endif
+    
+    int t=1;
     while(t--){solve();cout<<'\n';}
 
     return 0;

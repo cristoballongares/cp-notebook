@@ -43,37 +43,39 @@ using vll = vector<ll>;
 
 void solve(){
 
-    int n,m; cin>>n>>m;
-    unordered_map<string,string> um, um2;
+  int n; cin>>n;
+  vector<ll> dp(n+1, 0);
 
-    int i;
+  dp[0] = 1;
 
-    forr(i,0,n){
-        string a,b; cin>>a>>b;
-        um[a] = b;
-        um2[b] = a;
-    }
+  vi c = {1,2,3,4,5,6};
 
-    while(m--){
+  for(int i = 1 ; i <= n ; i++){
 
-        string a,b; cin>>a>>b;
-        string x = b;
-        b.pop_back();
-        if(um2.count(b)){
+      for(int x : c){
+        
+        if( i >= x) dp[i] = (dp[i] + dp[i-x]) % MOD;
 
-            cout<<a<<' '<<x<<' '<<"#"<<um2[b]<<'\n';
+      }
 
-        }
+  } 
 
-    }
+  cout<<dp[n];
+
+    
 
 }
 
 int main(){
     fast;
     
+#ifndef ONLINE_JUDGE
+    //freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout); // Descomenta esta linea si queremos que la salida vaya a un archivo
+#endif
+    
     int t=1; 
-    // cin>>t;
+    //cin>>t;
     while(t--){solve();cout<<'\n';}
 
     return 0;

@@ -42,38 +42,56 @@ using vll = vector<ll>;
 // -------------------------------------------
 
 void solve(){
+ 
+  int n; cin>>n;
 
-    int n,m; cin>>n>>m;
-    unordered_map<string,string> um, um2;
+  unordered_map<int,string> um;
+  unordered_map<int,int> um2;
+  int last = 0;
 
-    int i;
-
-    forr(i,0,n){
-        string a,b; cin>>a>>b;
-        um[a] = b;
-        um2[b] = a;
+  while(n--){
+    string x;cin>>x;
+    
+    int sum = 0;
+    for(char &c:x){
+      sum += (c - '0');
     }
 
-    while(m--){
+    um[sum] = x;
+    um2[sum] = um2[sum]+1;
 
-        string a,b; cin>>a>>b;
-        string x = b;
-        b.pop_back();
-        if(um2.count(b)){
+  }
 
-            cout<<a<<' '<<x<<' '<<"#"<<um2[b]<<'\n';
+  vector<pii> v;
 
-        }
+  for(const auto& p: um2){
+    v.pb({p.first,p.second}); 
+  }
 
-    }
+  sort(all(v), [&](pii a, pii b){
+
+    if(a.second!=b.second) return a.second>b.second;
+
+    return um[a.first] < um[b.first];
+
+  });
+
+  for( const auto& p: v){
+    cout<<um[p.first]<<' '<<p.second<<'\n';
+  }
 
 }
 
 int main(){
     fast;
     
+#ifndef ONLINE_JUDGE
+   // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout); // Descomenta esta linea si queremos que la salida vaya a un archivo
+#endif
+    
     int t=1; 
-    // cin>>t;
+//    cin>>t;
     while(t--){solve();cout<<'\n';}
 
     return 0;

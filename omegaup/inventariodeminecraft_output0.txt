@@ -1,0 +1,4 @@
+espada 3
+pocion 3
+gema 2
+escudo 1

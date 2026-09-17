@@ -94,6 +94,7 @@ bool check(const ll x, const ll y, const ll x2, const ll y2, const ll d, const v
   return ( total <= d);
 
   // total es igual a d o total es par y menor igual a d
+  // buuhh, pero no es necesario moverse en algun dia, podemos elegir quedarnos ahi mismo.
 
 }
 
