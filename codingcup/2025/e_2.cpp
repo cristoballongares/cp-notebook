@@ -41,37 +41,39 @@ using vll = vector<ll>;
 
 // -------------------------------------------
 
+void solve(){
+ 
+  string x; cin>>x;
 
-ll amount(int n){
+  unordered_map<ll,ll> um;
 
-  ll sum = 0;
+  ll actual = 5;
+  ll contador = 1;
+  ll ia = 1;
 
-  while(n>0){
+  for(ll sum = 5 ; sum <= 1e12 ; sum+=( ia )){
 
-    sum+=(n%10);
-    n/=10;
+      //cout<<"sum: "<<sum<<' '<<"IA: "<<ia<<' ';
+      um[sum] = contador;
+      //cout<<"um: "<<um[sum]<<'\n';
+      ia+=2;
+      contador++;
 
   }
 
-  return sum;
+  string num = "";
+  for(ll i = 0 ; i < sz(x) - 1 ; i++) num+=x[i];
 
-}
+  ll a = stoll(num) * 26 * 1ll;
+  ll b = ( x[x.size()-1] - 'a' + 1); 
 
-void solve(){
+  ll r = a + b;
+
+  //cout<<a<<' '<<b<<' '<<r<<'\n';
   
-    int l, r; cin>>l>>r;
-
-    ll sol = 0;
-
-    for(int i = l ; i<=r ; i++){
-
-      
-      sol+=(amount(i));
+  if(um[r] == 0) cout<<-1;
+  else cout<<um[r];
   
-
-    }
-
-    cout<<sol;
 
 
 }
@@ -80,12 +82,12 @@ int main(){
     fast;
     
 #ifndef ONLINE_JUDGE
- //   freopen("input.txt", "r", stdin);
+//    freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout); // Descomenta esta linea si queremos que la salida vaya a un archivo
 #endif
     
     int t=1; 
-    cin>>t;
+//    cin>>t;
     while(t--){solve();cout<<'\n';}
 
     return 0;

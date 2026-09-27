@@ -1,0 +1,8 @@
+6
+2001 Nolan10 60
+2004 Miyazaki 65
+2002 Coppola 55
+1999 Tarantino 50
+2003 Cuaron 70
+2005 Jeunet 80
+

@@ -1,59 +1,97 @@
-#include<bits/stdc++.h>
-
+#include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
-const char nl = '\n';
 
-struct p{
-    int year, score;
-    string name;
+// tipos
+using ll  = long long;
+using pii = pair<int,int>;
+using pll = pair<ll,ll>;
+using vi  = vector<int>;
+using vll = vector<ll>;
+
+// fast io
+#define fast ios::sync_with_stdio(false); cin.tie(nullptr)
+
+// loops
+#define forr(i,a,b) for(int i=(a);i<(b);i++)
+#define FOR(i,a,b) for(int i=(a);i<=(b);i++)
+#define rof(i,a,b) for(int i=(a);i>=(b);i--)
+
+// utileria
+#define all(x) (x).begin(),(x).end()
+#define sz(x) (int)(x).size()
+#define pb push_back
+#define fi first
+#define se second
+
+// mates
+#define MOD 1000000007LL
+#define INF 1e18
+
+// debugging
+
+#ifdef LOCAL
+    #define dbg(x) cerr << #x << " = " << x << "\n"
+    #define dbgv(v) cerr << #v << " = "; for(auto x : v) cerr << x << " "; cerr << "\n"
+    #define dbgm(m) cerr << #m << ":\n"; for(auto row : m){ for(auto x : row) cerr << x << " "; cerr << "\n";}
+#else
+    #define dbg(x)
+    #define dbgv(v)
+    #define dbgm(m)
+#endif
+
+// -------------------------------------------
+
+struct movie{
+  int year;
+  string name;
+  int rating;
 };
 
+void solve(){
+  
+  int n; cin>>n;
+  vector<movie> movies(n);
+  
+  for(auto &x:movies){
+
+    cin>>x.year>>x.name>>x.rating;
+
+  }
+
+  sort(all(movies), [&](movie a, movie b){
+
+      if(a.year!=b.year) return a.year <= b.year;
+
+      return a.rating < b.rating;
+
+  });
+
+
+  vi dp(n,1);
+
+  for(int i = 0; i <n ;i++){
+    for(int j = 0 ; j < i ; j++){
+      if( movies[j].year <= movies[i].year && movies[j].rating < movies[i].rating && movies[j].name!=movies[i].name)
+        dp[i] = max(dp[i], dp[j]+1);
+    
+    }
+  }
+
+  cout<<*max_element(all(dp));
+
+}
+
 int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-
-    int n; cin>>n;
-    vector<p> a(n);
-    for(auto &x:a){
-        int y,p; string nm;
-        cin>>y>>nm>>p;
-        x.year = y;
-        x.name = nm;
-        x.score = p;
-    }
-
-    sort(a.begin(),a.end(), [&](p a, p b){
-        if(a.year==b.year) return a.score<b.score;
-        return a.year<b.year;
-    });
-
-    // for(auto &x:a){
-    //     cout<<' '<<x.year<<' '<<x.name<<' '<<x.score<<'\n';
-    // }
-
-    // cout<<"\n\n\n";
-
-// 1. El maratón debe avanzar a través del tiempo: cada película seleccionada debe tener un año de estreno mayor o igual al de la película anterior.
-
-// 2. El maratón debe ser variado: no deben incluirse dos películas del mismo director de manera consecutiva.
-
-// 3. Cada película seleccionada debe ser "mejor" que la anterior, donde "mejor" se mide usando el puntaje dado (por ejemplo, de IMDb o Rotten Tomatoes).
-
-
-    int i,j;
-    int sol = 0,count=0;
-    vector<int> dp(n,1);
-    for(i=0;i<a.size();i++){
-        for(j=0;j<i;j++){
-            if(a[i].name != a[j].name && (a[j].score< a[i].score) &&a[j].year<=a[i].year){
-                dp[i] = max(dp[i], dp[j]+1);
-            }
-        }
-    }
-    sol = *max_element(dp.begin(),dp.end());
-    cout<<sol;
-
+    fast;
+    
+#ifndef ONLINE_JUDGE
+//    freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout); // Descomenta esta linea si queremos que la salida vaya a un archivo
+#endif
+    
+    int t=1; 
+ //   cin>>t;
+    while(t--){solve();cout<<'\n';}
 
     return 0;
 }
