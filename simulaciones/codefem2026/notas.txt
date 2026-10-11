@@ -1,0 +1,7 @@
+
+El C y el J parecen DP. No me decido cual intentar, no logro pensar en algo
+el estado es algo dificil de definir para ambos problemas, creo
+el J parece un poquito mas facil, creo
+no se como he llegado a 7 problemas O.o
+
+creo que el L no necesita dp
